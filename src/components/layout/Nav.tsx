@@ -18,7 +18,7 @@ const Nav = () => {
   const { data:Categories, isLoading:categoriLoding } = useGetCategoriesQuery<{ isLoading: boolean, data: {data:{ result:TCategory[] }} }>({limit:2000,offset:0})
  
  
- console.log(Categories)
+ if(isLoading||categoriLoding) return
 
 
   return (
