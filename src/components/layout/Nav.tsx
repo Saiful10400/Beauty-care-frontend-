@@ -1,5 +1,6 @@
 "use client";
 
+import { useGetGeneralQuery } from "@/redux/api";
 import {
   Search,
   User,
@@ -7,24 +8,13 @@ import {
   ShoppingBag,
 } from "lucide-react";
 import Image from "next/image";
-import { useEffect, useState } from "react";
 
-type SiteInfo = {
-  name: string;
-  logoUrl: string;
-};
+
+
 
 const Nav = () => {
-  const [siteInfo, setSiteInfo] = useState<SiteInfo | null>(null);
-
-  useEffect(() => {
-    // Example API call
-    fetch("/api/site-info") // Replace with your actual endpoint
-      .then(res => res.json())
-      .then(data => setSiteInfo(data))
-      .catch(err => console.error("Failed to load site info", err));
-  }, []);
-
+  const { data, isLoading } = useGetGeneralQuery<{ isLoading: boolean, data: { data: { name: string, logoUrl: string } } }>(null)
+ 
   const navItems = [
     "PERFUMES",
     "BRANDS",
@@ -36,9 +26,11 @@ const Nav = () => {
     "GIFTS",
   ];
 
+
+
   return (
     <header className="w-full border-b bg-white">
-   
+
 
       {/* Logo + Search + Icons */}
       <div className="flex flex-col sm:flex-row items-center justify-between px-4 py-3 gap-4">
@@ -56,14 +48,16 @@ const Nav = () => {
 
         {/* Logo */}
         <div className="flex flex-col items-center text-center min-w-fit">
-          {siteInfo && (
+          {!isLoading && (
             <>
               <Image
-                src={siteInfo.logoUrl}
-                alt={siteInfo.name}
+              width={400}
+              height={300}
+                src={data?.data?.logoUrl}
+                alt="Website logo"
                 className="w-28 h-auto"
               />
-              <span className="text-xs text-gray-500">{siteInfo.name}</span>
+              <span className="text-xs text-gray-500">{data?.data?.name}</span>
             </>
           )}
         </div>
