@@ -118,7 +118,7 @@ export default function BannerCarousel() {
                     <div
                         key={index}
                         onClick={() => setCurrentIndex(index)}
-                        className={`w-3 h-3 rounded-full cursor-pointer ${currentIndex === index ? 'bg-pink-600' : 'bg-gray-300'
+                        className={`w-3 h-3 rounded-full cursor-pointer ${currentIndex === index ? 'bg-[#4b274b]' : 'bg-gray-300'
                             }`}
                     />
                 ))}

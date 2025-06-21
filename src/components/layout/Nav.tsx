@@ -1,6 +1,7 @@
 "use client";
 
-import { useGetGeneralQuery } from "@/redux/api";
+import { useGetCategoriesQuery, useGetGeneralQuery } from "@/redux/api";
+import { TCategory } from "@/types";
 import {
   Search,
   User,
@@ -14,18 +15,10 @@ import Image from "next/image";
 
 const Nav = () => {
   const { data, isLoading } = useGetGeneralQuery<{ isLoading: boolean, data: { data: { name: string, logoUrl: string } } }>(null)
+  const { data:Categories, isLoading:categoriLoding } = useGetCategoriesQuery<{ isLoading: boolean, data: {data:{ result:TCategory[] }} }>({limit:2000,offset:0})
  
-  const navItems = [
-    "PERFUMES",
-    "BRANDS",
-    "SKINCARE",
-    "MAKEUP",
-    "HAIRCARE",
-    "AROMATHERAPY",
-    "CANDLES",
-    "GIFTS",
-  ];
-
+ 
+ console.log(Categories)
 
 
   return (
@@ -81,14 +74,14 @@ const Nav = () => {
 
       {/* Nav Menu (Always visible, scrollable on small screens) */}
       <nav className="bg-white border-t border-pink-200 overflow-x-auto">
-        <ul className="flex items-center justify-start sm:justify-center gap-4 px-4 py-2 text-sm font-medium text-gray-700 whitespace-nowrap">
-          {navItems.map(item => (
-            <li key={item}>
+        <ul className="flex items-center justify-center gap-4 px-4 py-2 text-sm font-medium text-gray-700 whitespace-nowrap">
+          {Categories?.data?.result?.map(item => (
+            <li key={item._id}>
               <a
                 href="#"
-                className="hover:text-pink-600 transition-colors"
+                className="hover:text-pink-600 transition-colors text-base font-medium"
               >
-                {item}
+                {item.name.toUpperCase()}
               </a>
             </li>
           ))}

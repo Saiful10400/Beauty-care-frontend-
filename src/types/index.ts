@@ -9,3 +9,13 @@ export type TBanner = {
   updatedAt: string; // ISO date string
   __v: number;
 };
+
+
+export type TCategory = {
+  _id: string;
+  name: string;
+  slug: string;
+  description: string;
+  isFeatured: boolean;
+  imageUrl: string;
+};
