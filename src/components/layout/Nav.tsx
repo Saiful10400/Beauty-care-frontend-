@@ -1,92 +1,92 @@
-"use client";
+'use client';
 
-import { useGetCategoriesQuery, useGetGeneralQuery } from "@/redux/api";
-import { TCategory } from "@/types";
-import {
-  Search,
-  User,
-  Heart,
-  ShoppingBag,
-} from "lucide-react";
-import Image from "next/image";
-
-
-
+import { useGetCategoriesQuery, useGetGeneralQuery } from '@/redux/api';
+import { TCategory } from '@/types';
+import { Search, User, Heart, ShoppingBag } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
+import SecondaryNav from '../ui/SecondaryNav';
 
 const Nav = () => {
-  const { data, isLoading } = useGetGeneralQuery<{ isLoading: boolean, data: { data: { name: string, logoUrl: string } } }>(null)
-  const { data:Categories, isLoading:categoriLoding } = useGetCategoriesQuery<{ isLoading: boolean, data: {data:{ result:TCategory[] }} }>({limit:2000,offset:0})
- 
- 
- if(isLoading||categoriLoding) return
+  const { data, isLoading } = useGetGeneralQuery<{
+    isLoading: boolean;
+    data: { data: { name: string; logoUrl: string } };
+  }>(null);
 
+  const { data: Categories, isLoading: categoriLoding } =
+    useGetCategoriesQuery<{
+      isLoading: boolean;
+      data: { data: { result: TCategory[] } };
+    }>({ limit: 2000, offset: 0 });
+
+  if (isLoading || categoriLoding) return null;
 
   return (
-    <header className="w-full border-b bg-white">
-
-
-      {/* Logo + Search + Icons */}
-      <div className="flex flex-col sm:flex-row items-center justify-between px-4 py-3 gap-4">
-        {/* Search */}
-        <div className="flex-1 w-full sm:max-w-md">
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Hey, what are you looking for?"
-              className="w-full border rounded-full py-2 pl-4 pr-10 text-sm focus:outline-pink-500"
-            />
-            <Search className="absolute right-3 top-2.5 h-5 w-5 text-gray-500" />
+    <header className="w-full bg-white border-b shadow-sm">
+      <div className="mx-auto max-w-[1400px] px-4">
+        {/* Top Bar */}
+        <div className="flex flex-col sm:flex-row items-center justify-between py-4 gap-6">
+          {/* Search Bar */}
+          <div className="w-full sm:max-w-md">
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Hey, what are you looking for?"
+                className="w-full border border-gray-300 rounded-full py-2.5 pl-5 pr-10 text-sm shadow-sm focus:border-pink-500 focus:ring-pink-500 focus:outline-none"
+              />
+              <Search className="absolute right-3 top-3 h-5 w-5 text-gray-400" />
+            </div>
           </div>
-        </div>
 
-        {/* Logo */}
-        <div className="flex flex-col items-center text-center min-w-fit">
-          {!isLoading && (
-            <>
+          {/* Logo Section */}
+          <div className="flex flex-col items-center text-center flex-shrink-0">
+            <Link href="/">
               <Image
-              width={400}
-              height={300}
+                width={400}
+                height={300}
                 src={data?.data?.logoUrl}
                 alt="Website logo"
-                className="w-28 h-auto"
+                className="w-28 sm:w-36 md:w-44 lg:w-52 h-auto object-contain transition-all duration-300"
               />
-              <span className="text-xs text-gray-500">{data?.data?.name}</span>
-            </>
-          )}
-        </div>
+            </Link>
+            <span className="text-xs text-gray-500 mt-1 tracking-wide text-center">
+              {data?.data?.name}
+            </span>
+          </div>
 
-        {/* Account Icons */}
-        <div className="flex items-center gap-4 text-sm">
-          <a href="#" className="flex items-center gap-1 hover:text-pink-600">
-            <User className="h-5 w-5" />
-            <span>Account</span>
-          </a>
-          <a href="#" className="flex items-center gap-1 hover:text-pink-600">
-            <Heart className="h-5 w-5" />
-            <span>Wishlist</span>
-          </a>
-          <a href="#" className="flex items-center gap-1 hover:text-pink-600">
-            <ShoppingBag className="h-5 w-5" />
-            <span>2 items</span>
-          </a>
+          {/* User Actions */}
+          <div className="flex items-center gap-5 text-sm">
+            <Link
+              href="#"
+              className="flex items-center gap-1 text-gray-600 hover:text-pink-600 transition"
+            >
+              <User className="h-5 w-5" />
+              <span className="hidden sm:inline">Account</span>
+            </Link>
+            <Link
+              href="#"
+              className="flex items-center gap-1 text-gray-600 hover:text-pink-600 transition"
+            >
+              <Heart className="h-5 w-5" />
+              <span className="hidden sm:inline">Wishlist</span>
+            </Link>
+            <Link
+              href="#"
+              className="flex items-center gap-1 text-gray-600 hover:text-pink-600 transition"
+            >
+              <ShoppingBag className="h-5 w-5" />
+              <span className="hidden sm:inline">2 items</span>
+            </Link>
+          </div>
         </div>
       </div>
 
-      {/* Nav Menu (Always visible, scrollable on small screens) */}
-      <nav className="bg-white border-t border-pink-200 overflow-x-auto">
-        <ul className="flex items-center justify-center gap-4 px-4 py-2 text-sm font-medium text-gray-700 whitespace-nowrap">
-          {Categories?.data?.result?.map(item => (
-            <li key={item._id}>
-              <a
-                href="#"
-                className="hover:text-pink-600 transition-colors text-base font-medium"
-              >
-                {item.name.toUpperCase()}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </nav>
+      {/* Bottom Nav */}
+      <div className="border-t bg-white shadow-sm">
+        <div className="mx-auto max-w-[1400px] px-4 py-2 overflow-x-auto">
+          <SecondaryNav />
+        </div>
+      </div>
     </header>
   );
 };

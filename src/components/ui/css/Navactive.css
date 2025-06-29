@@ -1,0 +1,45 @@
+.nav-list {
+  position: relative;
+  background-color: transparent;
+}
+
+.nav-list::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 0%;
+  transition: 300ms;
+  background-color: #f97316;
+}
+.nav-list:hover::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 100%;
+  background-color: #f97316;
+}
+
+
+.NavActive {
+  position: relative;
+  
+}
+
+.NavActive::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 100%;
+  background-color: #f97316;
+}
+
+.NavActive {
+  background-color: white;
+  color: #f97316;
+}

@@ -1,0 +1,20 @@
+/* Target a specific div by class */
+.mega-menu::-webkit-scrollbar {
+    width: 2px;  /* Adjust width as needed */
+  }
+  
+  /* Style the scrollbar track */
+  .mega-menu::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  
+  /* Style the scrollbar thumb (the draggable part) */
+  .mega-menu::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+  }
+  
+  /* Style the scrollbar thumb on hover */
+  .mega-menu::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }

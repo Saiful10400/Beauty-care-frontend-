@@ -13,6 +13,7 @@ export const baseApi = createApi({
     "general",
     "banner",
     "facebook-reveiw",
+    "combo-Offer",
   ],
 
   endpoints: (builder) => ({
@@ -108,8 +109,13 @@ export const baseApi = createApi({
 
     // Get all products
     getProduct: builder.query({
-      query: ({ offset, limit }) =>
-        `/product/get?offset=${offset}&limit=${limit}`,
+      query: (query) => {
+        const queryString = Object.entries(query)
+          .map((item) => item.join("="))
+          .join("&");
+
+        return `/product/get?${queryString}`;
+      },
       providesTags: ["product"],
     }),
 
@@ -203,10 +209,9 @@ export const baseApi = createApi({
 
     // Update general settings
     deleteFacebookReview: builder.mutation({
-      query: ({id}) => ({
+      query: ({ id }) => ({
         url: `/facebook-review/delete/${id}`,
         method: "DELETE",
-       
       }),
       invalidatesTags: ["facebook-reveiw"],
     }),
@@ -218,6 +223,73 @@ export const baseApi = createApi({
         body: data,
       }),
       invalidatesTags: ["facebook-reveiw"],
+    }),
+
+    // ======================== Offers ========================
+
+    // Get facebook reviews
+    getComboOffers: builder.query({
+      query: ({ offset, limit }) =>
+        `/offer/combo-offer/get?offset=${offset}&limit=${limit}`,
+      providesTags: ["combo-Offer"],
+    }),
+
+    // delete general settings
+    deleteCombo: builder.mutation({
+      query: (id) => ({
+        url: `/offer/combo-offer/delete/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["combo-Offer"],
+    }),
+
+    // Create combo-offer
+    createComboOffer: builder.mutation({
+      query: (data) => ({
+        url: "/offer/combo-offer/create",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["combo-Offer"],
+    }),
+
+    // Create percentage-offer
+    createPercentageOffer: builder.mutation({
+      query: ({ percentage, ...rest }) => ({
+        url: `/offer/percentageOffer/create?percentage=${percentage}`,
+        method: "POST",
+        body: rest,
+      }),
+      invalidatesTags: ["product"],
+    }),
+
+    // delete percentege-offer
+    deletePercentageOffer: builder.mutation({
+      query: (id) => ({
+        url: `offer/percentageOffer/delete/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["product"],
+    }),
+
+    // Create free gift offer
+    creteFreeOfferGift: builder.mutation({
+      query: (body) => ({
+        url: `/offer/freeGift/update`,
+        method: "PUT",
+        body: body,
+      }),
+      invalidatesTags: ["general"],
+    }),
+
+    // delete free gift offer
+    deleteFreeOfferGift: builder.mutation({
+      query: () => ({
+        url: `/offer/freeGift/update`,
+        method: "PUT",
+        body: { applicable: false },
+      }),
+      invalidatesTags: ["general"],
     }),
   }),
 });
@@ -258,4 +330,13 @@ export const {
   useGetFacebookReviewsQuery,
   useCreateFacebookReviewMutation,
   useDeleteFacebookReviewMutation,
+
+  // offer
+  useGetComboOffersQuery,
+  useCreateComboOfferMutation,
+  useDeleteComboMutation,
+  useCreatePercentageOfferMutation,
+  useDeletePercentageOfferMutation,
+  useCreteFreeOfferGiftMutation,
+  useDeleteFreeOfferGiftMutation,
 } = baseApi;
