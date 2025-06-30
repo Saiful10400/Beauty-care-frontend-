@@ -4,14 +4,13 @@ import Image from 'next/image';
 import SectionTittle from '../ui/SectionTittle';
 import { useGetBrandsQuery } from '@/redux/api';
 import { Tbrand } from '@/types';
+import Link from 'next/link';
 
 const handleShopNow = (route: string) => {
   console.log(`Navigating to ${route}`);
 };
 
-const handleShowAll = () => {
-  console.log('Navigating to all categories');
-};
+ 
 
 export default function HomeBrandsGrid() {
   const { data: brands } = useGetBrandsQuery({ offset: 0, limit: 8 });
@@ -50,12 +49,12 @@ export default function HomeBrandsGrid() {
 
       {/* Show All Button */}
       <div className="mt-16 flex justify-center">
-        <button
-          onClick={handleShowAll}
+        <Link
+          href={"/brands"}
           className="px-6 py-3 border border-gray-500 cursor-pointer text-black font-bold hover:bg-gray-100 transition-all duration-300"
         >
           Show All
-        </button>
+        </Link>
       </div>
     </div>
   );

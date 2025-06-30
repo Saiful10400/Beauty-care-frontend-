@@ -7,7 +7,7 @@ import { tProduct } from "@/types";
 
 const HomeNewArival = () => {
     const { data: products } = useGetProductQuery({ offset: 0, limit: 8 })
-    console.log(products)
+ 
     return (
         <div>
             <div className="max-w-[1400px] mx-auto px-4 py-12  ">

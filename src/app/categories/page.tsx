@@ -1,15 +1,22 @@
 "use client"
 import PageHeaderRouting from '@/components/ui/PageHeaderRouteing';
-import {  useGetCategoriesQuery } from '@/redux/api';
-import {  TCategory } from '@/types';
+import { useGetCategoriesQuery } from '@/redux/api';
+import { useAppDispatch } from '@/redux/featcher/hoocks';
+import { toggleCategoryId } from '@/redux/featcher/searchSlice';
+import { TCategory } from '@/types';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 
 const Category = () => {
     const { data: brands } = useGetCategoriesQuery({ offset: 0, limit: 5000 })
 
-    const handleShopNow = (name:string) => {
-console.log(name)
+    const move = useRouter()
+    const dispatch = useAppDispatch()
+
+    const handleShopNow = (id: string) => {
+        move.push("/all-product")
+        dispatch(toggleCategoryId(id))
     }
 
     return (
@@ -35,7 +42,7 @@ console.log(name)
                         <div className="text-center mt-6">
                             <h3 className="text-lg font-semibold text-[#333] uppercase">{Category.name}</h3>
                             <button
-                                onClick={() => handleShopNow(Category.name)}
+                                onClick={() => handleShopNow(Category._id)}
                                 className="mt-4 inline-block cursor-pointer px-5 py-2 text-sm font-medium text-white bg-[#d88c9a] rounded-full hover:bg-[#b56f7d] transition-all duration-300"
                             >
                                 Shop Now

@@ -27,7 +27,7 @@ const SecondaryNav = () => {
   const categories: Tcategory[] = data?.data?.result;
 
   return (
-    <div className="hidden lg:flex justify-between items-center gap-6 w-full">
+    <div className="hidden lg:flex justify-between items-center gap-6 w-full ">
       {/* Dropdown Menu */}
       <Dropdown placement="bottom-start">
         <DropdownTrigger>

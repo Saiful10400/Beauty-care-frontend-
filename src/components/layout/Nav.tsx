@@ -2,7 +2,7 @@
 
 import { useGetCategoriesQuery, useGetGeneralQuery } from '@/redux/api';
 import { TCategory } from '@/types';
-import { Search, User, Heart, ShoppingBag } from 'lucide-react';
+import { Search, Heart, ShoppingBag } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import SecondaryNav from '../ui/SecondaryNav';
@@ -22,7 +22,7 @@ const Nav = () => {
   if (isLoading || categoriLoding) return null;
 console.log(Categories)
   return (
-    <header className="w-full bg-white border-b shadow-sm">
+    <header className="w-full bg-white border-b shadow-sm sticky top-0 z-20">
       <div className="mx-auto max-w-[1400px] px-4">
         {/* Top Bar */}
         <div className="flex flex-col sm:flex-row items-center justify-between py-4 gap-6">
@@ -56,13 +56,7 @@ console.log(Categories)
 
           {/* User Actions */}
           <div className="flex items-center gap-5 text-sm">
-            <Link
-              href="#"
-              className="flex items-center gap-1 text-gray-600 hover:text-pink-600 transition"
-            >
-              <User className="h-5 w-5" />
-              <span className="hidden sm:inline">Account</span>
-            </Link>
+           
             <Link
               href="#"
               className="flex items-center gap-1 text-gray-600 hover:text-pink-600 transition"

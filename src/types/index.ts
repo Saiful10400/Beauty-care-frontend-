@@ -48,7 +48,7 @@ export type tProduct = {
 };
 
 export interface Tbrand {
-  id: string; // Unique identifier
+  _id: string; // Unique identifier
   name: string; // Brand name
   description?: string; // Optional brand description
   logoUrl?: string; // Optional logo image

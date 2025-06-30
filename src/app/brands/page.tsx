@@ -1,15 +1,23 @@
 "use client"
 import PageHeaderRouting from '@/components/ui/PageHeaderRouteing';
 import { useGetBrandsQuery } from '@/redux/api';
+import { useAppDispatch } from '@/redux/featcher/hoocks';
+import { toggleBrandId } from '@/redux/featcher/searchSlice';
 import { Tbrand } from '@/types';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+ 
 import React from 'react';
 
 const Brand = () => {
     const { data: brands } = useGetBrandsQuery({ offset: 0, limit: 5000 })
 
-    const handleShopNow = (name:string) => {
-console.log(name)
+    const move = useRouter()
+    const dispatch=useAppDispatch()
+
+    const handleShopNow = (id: string) => {
+        move.push("/all-product")
+        dispatch(toggleBrandId(id))
     }
 
     return (
@@ -35,7 +43,7 @@ console.log(name)
                         <div className="text-center mt-6">
                             <h3 className="text-lg font-semibold text-[#333] uppercase">{brand.name}</h3>
                             <button
-                                onClick={() => handleShopNow(brand.name)}
+                                onClick={() => handleShopNow(brand._id)}
                                 className="mt-4 inline-block cursor-pointer px-5 py-2 text-sm font-medium text-white bg-[#d88c9a] rounded-full hover:bg-[#b56f7d] transition-all duration-300"
                             >
                                 Shop Now

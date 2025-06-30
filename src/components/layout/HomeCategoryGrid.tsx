@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import SectionTittle from '../ui/SectionTittle';
+import Link from 'next/link';
 
 export const categories = [
   {
@@ -46,9 +47,7 @@ const handleShopNow = (route: string) => {
   console.log(`Navigating to ${route}`);
 };
 
-const handleShowAll = () => {
-  console.log('Navigating to all categories');
-};
+ 
 
 export default function CategoryGrid() {
   return (
@@ -85,12 +84,12 @@ export default function CategoryGrid() {
 
       {/* Show All Button */}
       <div className="mt-12 flex justify-center">
-        <button
-          onClick={handleShowAll}
+        <Link
+          href={"/categories"}
           className="px-6 py-3 border border-gray-500 cursor-pointer text-black font-bold hover:bg-gray-100 transition-all duration-300"
         >
           Show All
-        </button>
+        </Link>
 
       </div>
     </div>
