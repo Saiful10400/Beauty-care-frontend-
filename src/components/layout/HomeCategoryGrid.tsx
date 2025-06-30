@@ -52,10 +52,10 @@ const handleShowAll = () => {
 
 export default function CategoryGrid() {
   return (
-    <div className="max-w-[1400px] mx-auto px-4 py-12 bg-[#fff8f7]">
+    <div className="max-w-[1400px] mx-auto px-4 py-12  ">
       <SectionTittle tittle="Shop by Category" />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8">
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8">
         {categories.map((cat: TCategoryCard, index) => (
           <div
             key={index}
@@ -87,10 +87,11 @@ export default function CategoryGrid() {
       <div className="mt-12 flex justify-center">
         <button
           onClick={handleShowAll}
-          className="cursor-pointer px-8 py-3 bg-[#f6d4d8] text-[#333] font-semibold rounded-full shadow-md hover:bg-[#d88c9a] hover:text-white transition-all duration-300"
+          className="px-6 py-3 border border-gray-500 cursor-pointer text-black font-bold hover:bg-gray-100 transition-all duration-300"
         >
-          Show All Categories
+          Show All
         </button>
+
       </div>
     </div>
   );

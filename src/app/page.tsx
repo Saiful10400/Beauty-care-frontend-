@@ -1,5 +1,7 @@
 import BannerCarosel from '@/components/layout/BannerCarosel';
+import HomeBrandsGrid from '@/components/layout/HomeBrandsGrid';
 import CategoryGrid from '@/components/layout/HomeCategoryGrid';
+import HomeNewArival from '@/components/layout/HomeNewArival';
 import React from 'react';
 
 const page = () => {
@@ -10,6 +12,8 @@ const page = () => {
       </section>
 
       <CategoryGrid />
+      <HomeNewArival />
+      <HomeBrandsGrid />
 
     </div>
   );

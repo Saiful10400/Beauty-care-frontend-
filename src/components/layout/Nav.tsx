@@ -20,7 +20,7 @@ const Nav = () => {
     }>({ limit: 2000, offset: 0 });
 
   if (isLoading || categoriLoding) return null;
-
+console.log(Categories)
   return (
     <header className="w-full bg-white border-b shadow-sm">
       <div className="mx-auto max-w-[1400px] px-4">
