@@ -1,113 +1,142 @@
 import { tProduct } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
+export default function ProductCard({ product }: { product: tProduct }) {
+  const router = useRouter();
 
+  const displayPrice =
+    product.discountPrice !== 0 ? product.discountPrice : product.price;
 
-export default function ProductCard({
-    product,
-}: {
-    product: tProduct;
-}) {
-    const displayPrice = product.discountPrice !== 0 ? product.discountPrice : product.price;
-    const showDiscount =
-        product.discountPrice && product.discountPrice < product.price;
+  const showDiscount =
+    product.discountPrice && product.discountPrice < product.price;
 
-    return (
-        <div className="relative border border-gray-200 rounded-lg p-4 flex flex-col items-center text-center bg-white hover:shadow-md transition">
-            {/* Gender Tag */}
-            {product.gender && (
-                <div className="absolute z-10 top-3 left-3 bg-purple-700 text-white text-xs font-semibold px-2 py-0.5 rounded">
-                    {product.gender.toUpperCase()}
-                </div>
-            )}
-
-            {/* Favorite icon */}
-            <button
-                className="absolute top-3 right-3 text-gray-400 hover:text-pink-500 transition"
-                title="Add to Wishlist"
-            >
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                >
-                    <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M4.318 6.318a4.5 4.5 0 016.364 0L12 7.636l1.318-1.318a4.5 4.5 0 116.364 6.364L12 20.682l-7.682-7.682a4.5 4.5 0 010-6.364z"
-                    />
-                </svg>
-            </button>
-
-            {/* Image */}
-            <div className="w-full h-52 relative">
-                <Image
-                    src={product.images[0]}
-                    alt={product.name}
-                    fill
-                    className="object-cover"
-                />
-            </div>
-
-            {/* Name */}
-            <h3 className="mt-4 text-sm font-bold uppercase truncate w-full">
-                {product.name}
-            </h3>
-
-            {/* Brand */}
-            <div className="flex items-center justify-center gap-2 mt-1">
-                {product.brandId.logoUrl && (
-                    <Image
-                        src={product.brandId.logoUrl}
-                        alt={product.brandId.name}
-                        width={20}
-                        height={20}
-                        className="object-contain"
-                    />
-                )}
-                <Link
-                    href={product.brandId.websiteUrl ?? "#"}
-                    target="_blank"
-                    className="text-xs text-gray-500 hover:text-gray-700 underline"
-                >
-                    {product.brandId.name}
-                </Link>
-            </div>
-
-            {/* Category */}
-            {product.categoryIds && (
-                <p className="text-xs text-gray-400 mt-0.5">{product.categoryIds.name}</p>
-            )}
-
-            {/* Short Description */}
-            <p className="text-sm font-thin text-gray-700 mt-1">{product.shortDescription}</p>
-
-            {/* Price */}
-            <p className="mt-2 text-sm">
-                {showDiscount ? (
-                    <>
-                        <span className="line-through mr-2 text-gray-500 md:text-xl">৳ {product.price}</span>
-                        <span className="font-bold text-[#d88c9a] md:text-xl">৳ {displayPrice}</span>
-                    </>
-                ) : (
-                    <span className="font-bold md:text-xl">৳ {displayPrice}</span>
-                )}
-            </p>
-
-            {/* Add to Bag */}
-            <button
-                disabled={!product.inStock}
-                className={`mt-3 w-full border text-sm font-semibold py-2 rounded transition ${product.inStock
-                    ? "border-gray-300 hover:bg-gray-100"
-                    : "border-gray-200 bg-gray-100 text-gray-400 cursor-not-allowed"
-                    }`}
-            >
-                {product.inStock ? "ADD TO BAG" : "OUT OF STOCK"}
-            </button>
-        </div>
+  const discountPercent =
+    showDiscount &&
+    Math.round(
+      ((product.price - (product.discountPrice as number)) / product.price) * 100
     );
+
+  const hasLongDescription =
+    product.shortDescription && product.shortDescription.length > 40;
+
+  const handleAddToBag = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation(); // prevent card click
+    // TODO: Add product to cart logic here
+    console.log("Add to Bag clicked for", product.slug);
+  };
+
+  const handleCardClick = () => {
+    router.push(`/product/${product.slug}`);
+  };
+
+  return (
+    <div
+      onClick={handleCardClick}
+      className="relative border border-gray-100 rounded-2xl p-4 flex flex-col bg-white hover:shadow-lg hover:-translate-y-1 transition duration-300 cursor-pointer"
+    >
+      {/* Discount Badge */}
+      {discountPercent !== 0 && (
+        <span className="absolute top-3 left-3 bg-red-500 text-white text-xs px-2 py-0.5 rounded-full font-semibold z-10">
+          -{discountPercent}%
+        </span>
+      )}
+
+      {/* Image */}
+      <div className="w-full h-52 relative overflow-hidden rounded-lg group">
+        <Image
+          src={product.images[0]}
+          alt={product.name}
+          fill
+          className="object-cover group-hover:scale-105 transition-transform duration-300"
+        />
+      </div>
+
+      {/* Top content */}
+      <div className="flex flex-col flex-grow">
+        <h3 className="mt-4 text-sm font-semibold leading-tight line-clamp-2">
+          {product.name}
+        </h3>
+
+        <div className="flex items-center justify-center gap-2 mt-1">
+          {product.brandId.logoUrl && (
+            <Image
+              src={product.brandId.logoUrl}
+              alt={product.brandId.name}
+              width={18}
+              height={18}
+            />
+          )}
+          <Link
+            href={product.brandId.websiteUrl ?? "#"}
+            target="_blank"
+            onClick={(e) => e.stopPropagation()} // prevent card redirect
+            className="text-xs text-gray-500 hover:text-pink-600 underline"
+          >
+            {product.brandId.name}
+          </Link>
+        </div>
+
+        {Array.isArray(product.tags) && product.tags.length > 0 && (
+          <div className="flex flex-wrap gap-1 justify-center mt-2">
+            {product.tags.slice(0, 2).map((tag) => (
+              <span
+                key={tag}
+                className="bg-pink-50 text-pink-600 text-[10px] px-2 py-0.5 rounded-full font-medium border border-pink-200"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
+
+        {Array.isArray(product.categoryIds) && product.categoryIds.length > 0 && (
+          <p className="text-[11px] text-gray-400 mt-1">
+            {product.categoryIds.slice(0, 2).map((c) => c.name).join(", ")}
+          </p>
+        )}
+
+        {product.shortDescription && (
+          <p
+            className={`text-xs text-gray-600 mt-2 ${
+              hasLongDescription ? "line-clamp-2" : ""
+            }`}
+          >
+            {product.shortDescription}
+          </p>
+        )}
+      </div>
+
+      {/* Price and Add to Bag */}
+      <div className="mt-4 flex flex-col gap-2">
+        {showDiscount ? (
+          <div>
+            <span className="line-through text-sm text-gray-400 mr-2">
+              ৳ {product.price}
+            </span>
+            <span className="text-base font-bold text-pink-600">
+              ৳ {displayPrice}
+            </span>
+          </div>
+        ) : (
+          <span className="text-base font-bold text-gray-800">
+            ৳ {displayPrice}
+          </span>
+        )}
+
+        <button
+          onClick={handleAddToBag}
+          disabled={!product.inStock}
+          className={`w-full py-2 rounded-xl cursor-pointer text-sm font-medium transition duration-200 ${
+            product.inStock
+              ? "bg-pink-500 text-white hover:bg-pink-600"
+              : "bg-gray-200 text-gray-500 cursor-not-allowed"
+          }`}
+        >
+          {product.inStock ? "Add to Bag" : "Out of Stock"}
+        </button>
+      </div>
+    </div>
+  );
 }

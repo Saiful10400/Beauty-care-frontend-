@@ -1,3 +1,4 @@
+import buildQuery from "@/lib/buildQuery";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const baseApi = createApi({
@@ -110,9 +111,9 @@ export const baseApi = createApi({
     // Get all products
     getProduct: builder.query({
       query: (query) => {
-        const queryString = Object.entries(query)
-          .map((item) => item.join("="))
-          .join("&");
+        const queryString =buildQuery(query)
+
+        console.log(queryString)
 
         return `/product/get?${queryString}`;
       },
@@ -122,6 +123,12 @@ export const baseApi = createApi({
     // Get product by ID
     getProductById: builder.query({
       query: (id) => `/product/get/${id}`,
+      providesTags: ["product"],
+    }),
+
+    // Get product by Slug
+    getProductBySlug: builder.query({
+      query: (slug) => `/product/get/slug/${slug}`,
       providesTags: ["product"],
     }),
 
@@ -316,6 +323,7 @@ export const {
   useCreateProductMutation,
   useUpdateProductMutation,
   useDeleteProductMutation,
+  useGetProductBySlugQuery,
 
   // General
   useGetGeneralQuery,
