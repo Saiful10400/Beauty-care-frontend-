@@ -66,5 +66,5 @@ export type Tgeneral = {
   address: string;
   aboutUs: string;
   socialLinks: { facebook: string; instagram: string };
-  freeGift: { product: string; buyAbove: number; applicable: boolean };
+  freeGift: { product: tProduct; buyAbove: number; applicable: boolean };
 };

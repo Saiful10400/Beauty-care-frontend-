@@ -1,3 +1,7 @@
+
+import { addToCart } from "@/redux/featcher/CartSlice";
+import { taugleDrawer } from "@/redux/featcher/generalSlice";
+import { useAppDispatch } from "@/redux/featcher/hoocks";
 import { Tbrand, tProduct } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
@@ -5,6 +9,7 @@ import { useRouter } from "next/navigation";
 
 export default function ProductCard({ product }: { product: tProduct }) {
   const router = useRouter();
+  const dispatch = useAppDispatch()
 
   const displayPrice =
     product.discountPrice !== 0 ? product.discountPrice : product.price;
@@ -21,20 +26,21 @@ export default function ProductCard({ product }: { product: tProduct }) {
 
   const handleAddToBag = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    // TODO: Add product to cart logic
-    console.log("Add to Bag clicked for", product.slug);
+
+    dispatch(addToCart({ haveOffer: product.haveOffer?true:product?.isComboOffer?true:product?.haveOffer||false, name: product.name, price: product?.haveOffer ? (product.discountPrice as number) : product?.isComboOffer ? (product?.discountPrice as number) : product.price, productId: product._id, quantity: 1, imageUrl: product.images[0] }))
+    dispatch(taugleDrawer())
   };
 
   const handleCardClick = () => {
-    router.push(`/product/${product.slug}?isCombo=${product.isComboOffer?true:false}`);
+    router.push(`/product/${product.slug}?isCombo=${product.isComboOffer ? true : false}`);
   };
 
   // Normalize brands
   const brands: Array<Tbrand> = Array.isArray(product.brandId)
     ? product.brandId
     : product.brandId
-    ? [product.brandId]
-    : [];
+      ? [product.brandId]
+      : [];
 
   return (
     <div
@@ -118,9 +124,8 @@ export default function ProductCard({ product }: { product: tProduct }) {
         {/* Short Description */}
         {product.shortDescription && (
           <p
-            className={`text-xs text-gray-600 mt-2 ${
-              hasLongDescription ? "line-clamp-2" : ""
-            }`}
+            className={`text-xs text-gray-600 mt-2 ${hasLongDescription ? "line-clamp-2" : ""
+              }`}
           >
             {product.shortDescription}
           </p>
@@ -152,11 +157,10 @@ export default function ProductCard({ product }: { product: tProduct }) {
         <button
           onClick={handleAddToBag}
           disabled={!product.inStock}
-          className={`w-full py-2 rounded-xl cursor-pointer text-sm font-medium transition duration-200 ${
-            product.inStock
-              ? "bg-pink-500 text-white hover:bg-pink-600"
-              : "bg-gray-200 text-gray-500 cursor-not-allowed"
-          }`}
+          className={`w-full py-2 rounded-xl cursor-pointer text-sm font-medium transition duration-200 ${product.inStock
+            ? "bg-pink-500 text-white hover:bg-pink-600"
+            : "bg-gray-200 text-gray-500 cursor-not-allowed"
+            }`}
         >
           {product.inStock ? "Add to Bag" : "Out of Stock"}
         </button>
