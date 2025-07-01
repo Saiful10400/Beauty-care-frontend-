@@ -33,6 +33,7 @@ export type tProduct = {
   rating?: number;
   gender?: "male" | "female";
   haveOffer?: boolean;
+  isComboOffer?: boolean;
   brandId: {
     _id: string;
     name: string;
