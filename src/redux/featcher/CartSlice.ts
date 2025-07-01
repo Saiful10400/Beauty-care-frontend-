@@ -1,18 +1,12 @@
 // src/redux/slices/cartSlice.ts
+import { TorderProduct } from "@/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 // Example cart product type
-export interface CartItem {
-  productId: string;
-  name: string;
-  price: number;
-  quantity: number;
-  imageUrl?: string;
-  haveOffer:boolean
-}
+ 
 
 interface CartState {
-  items: CartItem[];
+  items: TorderProduct[];
 }
 
 const initialState: CartState = {
@@ -24,7 +18,7 @@ export const cartSlice = createSlice({
   initialState,
   reducers: {
     // Add or increment quantity
-    addToCart: (state, action: PayloadAction<CartItem>) => {
+    addToCart: (state, action: PayloadAction<TorderProduct>) => {
       const existing = state.items.find(
         (item) => item.productId === action.payload.productId
       );

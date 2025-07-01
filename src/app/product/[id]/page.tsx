@@ -237,22 +237,14 @@ export default function ProductDetails() {
             <button
               disabled={!product.inStock}
               className={`flex-1 cursor-pointer py-3 rounded-lg text-base font-semibold transition ${product.inStock
-                  ? "bg-pink-500 text-white hover:bg-pink-600"
-                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                ? "bg-pink-500 text-white hover:bg-pink-600"
+                : "bg-gray-300 text-gray-500 cursor-not-allowed"
                 }`}
             >
-              {product.inStock ? "Add to Bag" : "Out of Stock"}
+              {product.inStock ? "Buy Now" : "Out of Stock"}
             </button>
 
-            <button
-              disabled={!product.inStock}
-              className={`flex-1 cursor-pointer py-3 rounded-lg text-base font-semibold transition ${product.inStock
-                  ? "bg-emerald-500 text-white hover:bg-emerald-600"
-                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
-                }`}
-            >
-              Buy Now
-            </button>
+
           </div>
         </div>
       </div>

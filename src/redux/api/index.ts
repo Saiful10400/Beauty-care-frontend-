@@ -4,8 +4,8 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://kbeauty-touch-server.vercel.app/api",
-    // baseUrl: "http://localhost:8000/api",
+    // baseUrl: "https://kbeauty-touch-server.vercel.app/api",
+    baseUrl: "http://localhost:8000/api",
   }),
   tagTypes: [
     "category",
@@ -15,6 +15,7 @@ export const baseApi = createApi({
     "banner",
     "facebook-reveiw",
     "combo-Offer",
+    "order",
   ],
 
   endpoints: (builder) => ({
@@ -111,9 +112,9 @@ export const baseApi = createApi({
     // Get all products
     getProduct: builder.query({
       query: (query) => {
-        const queryString =buildQuery(query)
+        const queryString = buildQuery(query);
 
-        console.log(queryString)
+        console.log(queryString);
 
         return `/product/get?${queryString}`;
       },
@@ -128,7 +129,8 @@ export const baseApi = createApi({
 
     // Get product by Slug
     getProductBySlug: builder.query({
-      query: (params) => `/product/get/slug/${params.slug}?isCombo=${params.isCombo}`,
+      query: (params) =>
+        `/product/get/slug/${params.slug}?isCombo=${params.isCombo}`,
       providesTags: ["product"],
     }),
 
@@ -298,6 +300,18 @@ export const baseApi = createApi({
       }),
       invalidatesTags: ["general"],
     }),
+
+    // ======================== order ========================
+
+    // Create order
+    createAOrder: builder.mutation({
+      query: (data) => ({
+        url: `/order/create`,
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["order"],
+    }),
   }),
 });
 
@@ -347,4 +361,7 @@ export const {
   useDeletePercentageOfferMutation,
   useCreteFreeOfferGiftMutation,
   useDeleteFreeOfferGiftMutation,
+
+  // order
+  useCreateAOrderMutation,
 } = baseApi;

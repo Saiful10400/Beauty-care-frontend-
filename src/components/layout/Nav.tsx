@@ -1,6 +1,6 @@
 "use client";
 
-import { useGetGeneralQuery } from "@/redux/api";
+import { useCreateAOrderMutation, useGetGeneralQuery } from "@/redux/api";
 import {
   Search,
   ShoppingBag,
@@ -19,12 +19,13 @@ import SecondaryNav from "../ui/SecondaryNav";
 import { useState } from "react";
 import { useAppSelector, useAppDispatch } from "@/redux/featcher/hoocks";
 import {
+  clearCart,
   decrementQuantity,
   incrementQuantity,
   removeFromCart,
 } from "@/redux/featcher/CartSlice";
 import { taugleDrawer } from "@/redux/featcher/generalSlice";
-import { Tgeneral } from "@/types";
+import { Tgeneral, TOrder } from "@/types";
 
 const Nav = () => {
   const { data, isLoading } = useGetGeneralQuery<{
@@ -60,10 +61,10 @@ const Nav = () => {
 
   // 🎁 Free Gift Logic
 
-const{data:generalData}=useGetGeneralQuery(null)
-const general:Tgeneral=generalData?.data
+  const { data: generalData } = useGetGeneralQuery(null)
+  const general: Tgeneral = generalData?.data
 
-  const offerAvailable = general?.freeGift?.applicable||false; // toggle this as needed
+  const offerAvailable = general?.freeGift?.applicable || false; // toggle this as needed
 
   // const freeGift = {
   //   id: "gift001",
@@ -73,7 +74,8 @@ const general:Tgeneral=generalData?.data
   // };
   const qualifiesForGift = offerAvailable && subtotal >= general?.freeGift?.buyAbove;
 
-  const handleSubmit = () => {
+  const [createOrder] = useCreateAOrderMutation()
+  const handleSubmit = async () => {
     const newErrors = { name: "", phone: "", address: "" };
     let hasError = false;
 
@@ -93,7 +95,28 @@ const general:Tgeneral=generalData?.data
     setErrors(newErrors);
     if (hasError) return;
 
-    alert("✅ অর্ডার সফলভাবে জমা হয়েছে!");
+
+
+    const payload: TOrder = {
+      customerName: name,
+      customerAddress: address,
+      customerPhone: phone,
+      deliveryCharge,
+      paymentMethod: "COD",
+      products: items,
+      totalAmount: subtotal,
+      freeGiftEligible: offerAvailable && subtotal >= general?.freeGift?.buyAbove,
+      giftProduct: offerAvailable && subtotal >= general?.freeGift?.buyAbove ? { imageUrl: general?.freeGift?.product?.images[0], name: general?.freeGift?.product?.name } : { imageUrl: "", name: "" }
+    }
+
+    const response = await createOrder(payload)
+
+    if (response?.data?.statusCode === 200) {
+
+      alert("✅ অর্ডার সফলভাবে জমা হয়েছে!");
+      dispatch(clearCart())
+    }
+
   };
 
   return (
@@ -117,11 +140,10 @@ const general:Tgeneral=generalData?.data
 
             {/* Search */}
             <div
-              className={`flex-grow sm:max-w-md transition-all duration-500 ${
-                mobileSearchOpen
-                  ? "max-w-full opacity-100"
-                  : "max-w-0 opacity-0 overflow-hidden sm:max-w-md sm:opacity-100"
-              }`}
+              className={`flex-grow sm:max-w-md transition-all duration-500 ${mobileSearchOpen
+                ? "max-w-full opacity-100"
+                : "max-w-0 opacity-0 overflow-hidden sm:max-w-md sm:opacity-100"
+                }`}
             >
               <div className="relative">
                 <input
@@ -142,9 +164,8 @@ const general:Tgeneral=generalData?.data
 
             {/* Logo */}
             <div
-              className={`absolute left-1/2 -translate-x-1/2 flex flex-col items-center text-center flex-shrink-0 mx-1 sm:static sm:translate-x-0 sm:mx-0 min-w-[70px] sm:min-w-0 transition-opacity duration-300 ${
-                mobileSearchOpen ? "opacity-0 pointer-events-none" : "opacity-100"
-              }`}
+              className={`absolute left-1/2 -translate-x-1/2 flex flex-col items-center text-center flex-shrink-0 mx-1 sm:static sm:translate-x-0 sm:mx-0 min-w-[70px] sm:min-w-0 transition-opacity duration-300 ${mobileSearchOpen ? "opacity-0 pointer-events-none" : "opacity-100"
+                }`}
             >
               {isLoading ? (
                 <div className="w-20 sm:w-36 h-8 sm:h-10 bg-gray-200 rounded animate-pulse" />
@@ -190,9 +211,8 @@ const general:Tgeneral=generalData?.data
 
       {/* CART DRAWER */}
       <div
-        className={`fixed top-0 right-0 h-full w-full max-w-md bg-white shadow-xl transform transition-transform duration-300 z-40 ${
-          drawerOpen ? "translate-x-0" : "translate-x-full"
-        }`}
+        className={`fixed top-0 right-0 h-full w-full max-w-md bg-white shadow-xl transform transition-transform duration-300 z-40 ${drawerOpen ? "translate-x-0" : "translate-x-full"
+          }`}
         role="dialog"
         aria-modal="true"
       >
