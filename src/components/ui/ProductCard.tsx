@@ -26,7 +26,7 @@ export default function ProductCard({ product }: { product: tProduct }) {
   };
 
   const handleCardClick = () => {
-    router.push(`/product/${product.slug}`);
+    router.push(`/product/${product.slug}?isCombo=${product.isComboOffer?true:false}`);
   };
 
   // Normalize brands

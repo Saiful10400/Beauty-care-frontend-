@@ -9,7 +9,7 @@ interface FilterState {
 }
 
 const initialState: FilterState = {
-  price: { max: 30000, min: 0 },
+  price: { max: 5000, min: 0 },
   brandIds: [],
   categoryIds: [],
   searchTerm: "",

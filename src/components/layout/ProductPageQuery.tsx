@@ -15,7 +15,7 @@ import {
 } from '@/redux/featcher/searchSlice';
 
 const MIN = 1;
-const MAX = 36000;
+const MAX = 10000;
 
 const ProductPageQuery = () => {
   const dispatch = useAppDispatch();
@@ -100,7 +100,7 @@ const ProductPageQuery = () => {
       <button
         onClick={() => setFiltersOpen(true)}
         aria-label="Show Filters"
-        className="md:hidden fixed bottom-5 right-5 z-50 bg-pink-600 hover:bg-pink-700 text-white p-3 rounded-full shadow-lg flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-pink-400"
+        className="md:hidden fixed bottom-20 right-5 z-50 bg-pink-600 hover:bg-pink-700 text-white p-3 rounded-full shadow-lg flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-pink-400"
         title="Show Filters"
       >
         {/* Filter funnel SVG icon */}
@@ -145,7 +145,7 @@ const ProductPageQuery = () => {
         <div>
           <h2 className="font-semibold text-lg mb-2">Filter by Price</h2>
 
-          <div className="relative h-8 mt-4">
+          <div className="relative h-8 mt-4 z-10">
             <div className="absolute top-1/2 -translate-y-1/2 w-full h-2 bg-gray-300 rounded-full z-0" />
             <div
               className="absolute top-1/2 -translate-y-1/2 h-2 bg-pink-500 rounded-full z-10"

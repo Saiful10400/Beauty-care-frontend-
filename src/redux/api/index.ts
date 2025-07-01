@@ -4,8 +4,8 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: fetchBaseQuery({
-    // baseUrl: "https://kbeauty-touch-server.vercel.app/api",
-    baseUrl: "http://localhost:8000/api",
+    baseUrl: "https://kbeauty-touch-server.vercel.app/api",
+    // baseUrl: "http://localhost:8000/api",
   }),
   tagTypes: [
     "category",
@@ -128,7 +128,7 @@ export const baseApi = createApi({
 
     // Get product by Slug
     getProductBySlug: builder.query({
-      query: (slug) => `/product/get/slug/${slug}`,
+      query: (params) => `/product/get/slug/${params.slug}?isCombo=${params.isCombo}`,
       providesTags: ["product"],
     }),
 

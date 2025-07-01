@@ -7,12 +7,11 @@ import { useGetBannerQuery } from '@/redux/api';
 import { TBanner } from '@/types';
 
 export default function BannerCarousel() {
-    const { data: banners } = useGetBannerQuery<{ data: { data: TBanner[] } }>(null);
+    const { data: banners, isLoading } = useGetBannerQuery<{ data: { data: TBanner[] },isLoading:boolean }>(null);
 
     const [currentIndex, setCurrentIndex] = useState(0);
     const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-    // Touch state
     const touchStartX = useRef(0);
     const touchEndX = useRef(0);
 
@@ -31,9 +30,11 @@ export default function BannerCarousel() {
     };
 
     useEffect(() => {
-        startAutoSlide();
+        if (!isLoading) {
+            startAutoSlide();
+        }
         return () => stopAutoSlide();
-    }, [startAutoSlide]);
+    }, [startAutoSlide, isLoading]);
 
     const nextSlide = () => {
         setCurrentIndex((prev) =>
@@ -47,7 +48,6 @@ export default function BannerCarousel() {
         );
     };
 
-    // Touch gesture handling
     const handleTouchStart = (e: React.TouchEvent) => {
         touchStartX.current = e.touches[0].clientX;
     };
@@ -62,13 +62,18 @@ export default function BannerCarousel() {
         const minSwipeDistance = 50;
 
         if (distance > minSwipeDistance) {
-            // Swiped left
             nextSlide();
         } else if (distance < -minSwipeDistance) {
-            // Swiped right
             prevSlide();
         }
     };
+
+    if (isLoading) {
+        // Skeleton placeholder during banner load
+        return (
+            <div className="w-full h-[250px] sm:h-[300px] md:h-[400px] lg:h-[500px] bg-gray-200 animate-pulse rounded-md" />
+        );
+    }
 
     return (
         <div

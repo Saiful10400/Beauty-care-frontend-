@@ -4,6 +4,8 @@ import "./globals.css";
 import Nav from "@/components/layout/Nav";
 import ReduxProvider from "@/redux/provider/ReduxProvider";
 import TopContactSection from "@/components/layout/TopContactSection";
+import Footer from "@/components/layout/Footer";
+import "primereact/resources/themes/lara-light-cyan/theme.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,18 +33,14 @@ export default function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          <TopContactSection/>
+          <TopContactSection />
           <Nav />
-
-
-
-
-          
           <div className="flex justify-center sm:px-4">
             <div className="w-full max-w-[1400px]">{children}</div>
           </div>
         </body>
       </html>
+      <Footer />
     </ReduxProvider>
   );
 }

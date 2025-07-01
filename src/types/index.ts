@@ -56,3 +56,15 @@ export interface Tbrand {
   websiteUrl?: string; // Optional external link
   isFeatured?: boolean; // For featured brand sections
 }
+
+
+export type Tgeneral = {
+  siteName: string;
+  logoUrl: string;
+  contactEmail: string;
+  phone: string;
+  address: string;
+  aboutUs: string;
+  socialLinks: { facebook: string; instagram: string };
+  freeGift: { product: string; buyAbove: number; applicable: boolean };
+};

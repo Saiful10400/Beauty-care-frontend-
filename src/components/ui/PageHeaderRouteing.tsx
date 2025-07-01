@@ -16,26 +16,37 @@ const PageHeaderRouting = () => {
 
   return (
     <div className="pt-10 pb-8">
-      <h1 className="text-4xl font-bold">{capitalizedTitle}</h1>
-      <div className="font-semibold flex items-center gap-2 mt-2">
-        <Link href="/">HOME</Link>
-        {routes.length > 0 && <span>{`>`}</span>}
+      {/* Page Title */}
+      <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800">
+        {capitalizedTitle}
+      </h1>
+
+      {/* Breadcrumb */}
+      <nav className="flex flex-wrap items-center gap-1 mt-3 text-sm sm:text-base font-medium">
+        <Link href="/" className="text-gray-500 hover:text-pink-500 transition-colors">
+          HOME
+        </Link>
+        {routes.length > 0 && <span className="text-gray-400">›</span>}
         {routes.map((item, idx) => {
           const href = "/" + routes.slice(0, idx + 1).join("/");
           const isLast = idx === routes.length - 1;
           return (
-            <div key={idx} className="flex items-center gap-2">
+            <div key={idx} className="flex items-center gap-1">
               <Link
                 href={href}
-                className={isLast ? "text-[#ff9208]" : ""}
+                className={
+                  isLast
+                    ? "text-pink-600"
+                    : "text-gray-500 hover:text-pink-500 transition-colors"
+                }
               >
-                {item.toUpperCase()}
+                {item.replace(/-/g, " ").toUpperCase()}
               </Link>
-              {!isLast && <span>{`>`}</span>}
+              {!isLast && <span className="text-gray-400">›</span>}
             </div>
           );
         })}
-      </div>
+      </nav>
     </div>
   );
 };

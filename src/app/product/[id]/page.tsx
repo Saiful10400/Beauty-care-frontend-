@@ -2,8 +2,9 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { useGetProductBySlugQuery } from "@/redux/api";
+import { Tbrand, TCategory } from "@/types";
 
 export default function ProductDetails() {
   const params = useParams();
@@ -11,23 +12,54 @@ export default function ProductDetails() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
 
-  const { data, isLoading } = useGetProductBySlugQuery(slug);
+  const searchParams = useSearchParams();
+  const isCombo = searchParams.get("isCombo");
 
-  if (isLoading) return <div className="p-8">Loading...</div>;
+  const { data, isLoading } = useGetProductBySlugQuery({ slug, isCombo });
+
+  if (isLoading)
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[300px]">
+        <svg
+          className="animate-spin h-10 w-10 text-pink-500 mb-2"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <circle
+            className="opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            strokeWidth="4"
+          />
+          <path
+            className="opacity-75"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+          />
+        </svg>
+        <p className="text-pink-500 text-sm font-medium">Loading product...</p>
+      </div>
+    );
 
   const product = data?.data;
 
-  const displayPrice =
-    product.discountPrice && product.discountPrice < product.price
-      ? product.discountPrice
-      : product.price;
+  const hasDiscount =
+    product.discountPrice && product.discountPrice < product.price;
 
-  const discountPercent =
-    product.discountPrice && product.discountPrice < product.price
-      ? Math.round(
-          ((product.price - product.discountPrice) / product.price) * 100
-        )
-      : 0;
+  const displayPrice = hasDiscount ? product.discountPrice : product.price;
+
+  const discountPercent = hasDiscount
+    ? Math.round(
+      ((product.price - product.discountPrice) / product.price) * 100
+    )
+    : 0;
+
+  const savedAmount = hasDiscount
+    ? product.price - product.discountPrice
+    : 0;
 
   const nextImage = () => {
     setCurrentIndex((prev) =>
@@ -41,13 +73,18 @@ export default function ProductDetails() {
     );
   };
 
+  // Normalize brands and categories
+  const brands = product.isComboOffer ? product.brandsId : [product.brandId];
+  const categories = Array.isArray(product.categoryIds)
+    ? product.categoryIds
+    : [product.categoryIds];
+
   return (
     <div className="max-w-6xl mx-auto p-4 flex flex-col gap-8">
       {/* Main grid */}
       <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
         {/* Left: Image carousel */}
         <div className="md:col-span-3 flex flex-col gap-2">
-          {/* Carousel */}
           <div className="relative w-full h-[400px] rounded-lg overflow-hidden border">
             <Image
               src={product.images[currentIndex]}
@@ -55,12 +92,12 @@ export default function ProductDetails() {
               fill
               className="object-cover transition duration-300"
             />
-            {discountPercent > 0 && (
+            {/* Discount badge: only if NOT combo */}
+            {!product.isComboOffer && discountPercent > 0 && (
               <span className="absolute top-3 left-3 bg-red-500 text-white text-xs px-2 py-0.5 rounded-full font-semibold">
                 -{discountPercent}%
               </span>
             )}
-            {/* Navigation */}
             <button
               onClick={prevImage}
               aria-label="Previous Image"
@@ -76,15 +113,15 @@ export default function ProductDetails() {
               ▶
             </button>
           </div>
+
           {/* Thumbnails */}
           <div className="flex gap-2">
-            {product.images.map((img:string, i:number) => (
+            {product.images.map((img: string, i: number) => (
               <button
                 key={i}
                 onClick={() => setCurrentIndex(i)}
-                className={`relative cursor-pointer w-20 h-20 border rounded overflow-hidden ${
-                  i === currentIndex ? "ring-2 ring-pink-500" : ""
-                }`}
+                className={`relative cursor-pointer w-20 h-20 border rounded overflow-hidden ${i === currentIndex ? "ring-2 ring-pink-500" : ""
+                  }`}
                 aria-label={`Select image ${i + 1}`}
               >
                 <Image
@@ -100,11 +137,18 @@ export default function ProductDetails() {
 
         {/* Right: Product info */}
         <div className="md:col-span-2 flex flex-col gap-4">
-          <h1 className="text-2xl font-bold">{product.name}</h1>
+          <h1 className="text-2xl font-bold flex items-center gap-2">
+            {product.name}
+            {product.isComboOffer && (
+              <span className="bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 text-amber-900 text-xs font-extrabold px-3 py-1 rounded-full shadow-lg animate-pulse select-none">
+                Combo Offer
+              </span>
+            )}
+          </h1>
 
           {/* Price */}
           <div className="flex items-center gap-2">
-            {discountPercent > 0 && (
+            {!product.isComboOffer && discountPercent > 0 && (
               <span className="line-through text-gray-400 text-lg">
                 ৳ {product.price}
               </span>
@@ -112,40 +156,49 @@ export default function ProductDetails() {
             <span className="text-2xl font-bold text-pink-600">
               ৳ {displayPrice}
             </span>
+            {/* Show saved amount in combo */}
+            {product.isComboOffer && savedAmount > 0 && (
+              <span className="text-sm text-green-600 font-semibold ml-2">
+                You save ৳{savedAmount}
+              </span>
+            )}
           </div>
 
           <p className="text-gray-700">{product.shortDescription}</p>
 
-          {/* Brand */}
-          <div className="flex items-center gap-2">
-            {product.brandId.logoUrl && (
-              <Image
-                src={product.brandId.logoUrl}
-                alt={product.brandId.name}
-                width={24}
-                height={24}
-              />
-            )}
-            <Link
-              href={product.brandId.websiteUrl}
-              target="_blank"
-              className="text-sm text-gray-500 hover:text-pink-600 underline"
-            >
-              {product.brandId.name}
-            </Link>
+          {/* Brands */}
+          <div className="flex flex-wrap items-center gap-2">
+            {brands?.map((brand: Tbrand, i: number) => (
+              <Link
+                key={i}
+                href={brand.websiteUrl as string}
+                target="_blank"
+                className="flex items-center gap-1 text-sm text-gray-500 hover:text-pink-600 underline"
+              >
+                {brand.logoUrl && (
+                  <Image
+                    src={brand.logoUrl}
+                    alt={brand.name}
+                    width={20}
+                    height={20}
+                  />
+                )}
+                {brand.name}
+              </Link>
+            ))}
           </div>
 
-          {/* Category */}
-          {product.categoryIds && (
+          {/* Categories */}
+          {categories && categories.length > 0 && (
             <p className="text-sm text-gray-500">
-              Category: {product.categoryIds.name}
+              Category: {categories.map((c: TCategory) => c.name).join(", ")}
             </p>
           )}
 
           {/* Tags */}
           <div className="flex gap-2 flex-wrap">
-            {product.tags.map(
-              (tag:string, i:number) =>
+            {product.tags?.map(
+              (tag: string, i: number) =>
                 tag && (
                   <span
                     key={i}
@@ -183,22 +236,20 @@ export default function ProductDetails() {
           <div className="flex gap-3 mt-4">
             <button
               disabled={!product.inStock}
-              className={`flex-1 cursor-pointer py-3 rounded-lg text-base font-semibold transition ${
-                product.inStock
+              className={`flex-1 cursor-pointer py-3 rounded-lg text-base font-semibold transition ${product.inStock
                   ? "bg-pink-500 text-white hover:bg-pink-600"
                   : "bg-gray-300 text-gray-500 cursor-not-allowed"
-              }`}
+                }`}
             >
               {product.inStock ? "Add to Bag" : "Out of Stock"}
             </button>
 
             <button
               disabled={!product.inStock}
-              className={`flex-1 cursor-pointer py-3 rounded-lg text-base font-semibold transition ${
-                product.inStock
+              className={`flex-1 cursor-pointer py-3 rounded-lg text-base font-semibold transition ${product.inStock
                   ? "bg-emerald-500 text-white hover:bg-emerald-600"
                   : "bg-gray-300 text-gray-500 cursor-not-allowed"
-              }`}
+                }`}
             >
               Buy Now
             </button>
@@ -207,10 +258,12 @@ export default function ProductDetails() {
       </div>
 
       {/* Description */}
-      <div
-        className="prose max-w-none mt-8"
-        dangerouslySetInnerHTML={{ __html: product.description }}
-      />
+      <div className=" max-w-none">
+        <div
+          className="ql-editor mt-8"
+          dangerouslySetInnerHTML={{ __html: product.description }}
+        />
+      </div>
     </div>
   );
 }

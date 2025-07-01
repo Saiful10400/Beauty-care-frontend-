@@ -1,6 +1,8 @@
 .nav-list {
   position: relative;
   background-color: transparent;
+  color: #374151; /* neutral text color */
+  transition: color 200ms;
 }
 
 .nav-list::after {
@@ -10,23 +12,22 @@
   bottom: 0;
   height: 2px;
   width: 0%;
-  transition: 300ms;
-  background-color: #f97316;
-}
-.nav-list:hover::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  height: 2px;
-  width: 100%;
-  background-color: #f97316;
+  transition: width 300ms;
+  background-color: #ec4899; /* pink-500 */
 }
 
+.nav-list:hover {
+  color: #ec4899;
+}
+
+.nav-list:hover::after {
+  width: 100%;
+  background-color: #ec4899;
+}
 
 .NavActive {
   position: relative;
-  
+  color: #ec4899;
 }
 
 .NavActive::after {
@@ -36,10 +37,5 @@
   bottom: 0;
   height: 2px;
   width: 100%;
-  background-color: #f97316;
-}
-
-.NavActive {
-  background-color: white;
-  color: #f97316;
+  background-color: #ec4899;
 }
