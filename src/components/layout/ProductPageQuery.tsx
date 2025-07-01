@@ -100,7 +100,7 @@ const ProductPageQuery = () => {
       <button
         onClick={() => setFiltersOpen(true)}
         aria-label="Show Filters"
-        className="md:hidden fixed bottom-20 right-5 z-50 bg-pink-600 hover:bg-pink-700 text-white p-3 rounded-full shadow-lg flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-pink-400"
+        className="md:hidden fixed bottom-20 right-5 z-30 bg-pink-600 hover:bg-pink-700 text-white p-3 rounded-full shadow-lg flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-pink-400"
         title="Show Filters"
       >
         {/* Filter funnel SVG icon */}
@@ -126,7 +126,7 @@ const ProductPageQuery = () => {
         id="filters-panel"
         className={`${
           filtersOpen ? 'block' : 'hidden'
-        } md:block w-full md:w-[300px] p-4 space-y-6 text-sm text-[#333] bg-white md:bg-transparent border-r md:border-r-0 fixed md:static top-0 md:top-auto left-0 h-full md:h-auto z-50 overflow-y-auto md:overflow-visible shadow-lg md:shadow-none`}
+        } md:block w-full md:w-[300px] p-4 space-y-6 text-sm text-[#333] bg-white md:bg-transparent border-r md:border-r-0 fixed md:static top-0 md:top-auto left-0 h-full md:h-auto z-30 overflow-y-auto md:overflow-visible shadow-lg md:shadow-none`}
         style={{ maxWidth: '300px' }}
       >
         {/* Close button inside sidebar for mobile */}

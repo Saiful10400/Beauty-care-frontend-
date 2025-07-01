@@ -5,6 +5,9 @@ import Link from "next/link";
 import { useParams, useSearchParams } from "next/navigation";
 import { useGetProductBySlugQuery } from "@/redux/api";
 import { Tbrand, TCategory } from "@/types";
+import { useAppDispatch } from "@/redux/featcher/hoocks";
+import { addToCart } from "@/redux/featcher/CartSlice";
+import { taugleDrawer } from "@/redux/featcher/generalSlice";
 
 export default function ProductDetails() {
   const params = useParams();
@@ -16,7 +19,7 @@ export default function ProductDetails() {
   const isCombo = searchParams.get("isCombo");
 
   const { data, isLoading } = useGetProductBySlugQuery({ slug, isCombo });
-
+  const dispatch = useAppDispatch()
   if (isLoading)
     return (
       <div className="flex flex-col items-center justify-center min-h-[300px]">
@@ -78,6 +81,16 @@ export default function ProductDetails() {
   const categories = Array.isArray(product.categoryIds)
     ? product.categoryIds
     : [product.categoryIds];
+
+
+
+
+  const handleBuy = () => {
+
+
+    dispatch(addToCart({ haveOffer: product.haveOffer ? true : product?.isComboOffer ? true : product?.haveOffer || false, name: product.name, price: product?.haveOffer ? (product.discountPrice as number) : product?.isComboOffer ? (product?.discountPrice as number) : product.price, productId: product._id, quantity, imageUrl: product.images[0] }))
+    dispatch(taugleDrawer())
+  };
 
   return (
     <div className="max-w-6xl mx-auto p-4 flex flex-col gap-8">
@@ -235,6 +248,7 @@ export default function ProductDetails() {
           {/* Action buttons */}
           <div className="flex gap-3 mt-4">
             <button
+              onClick={handleBuy}
               disabled={!product.inStock}
               className={`flex-1 cursor-pointer py-3 rounded-lg text-base font-semibold transition ${product.inStock
                 ? "bg-pink-500 text-white hover:bg-pink-600"

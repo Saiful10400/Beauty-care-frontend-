@@ -211,7 +211,7 @@ const Nav = () => {
 
       {/* CART DRAWER */}
       <div
-        className={`fixed top-0 right-0 h-full w-full max-w-md bg-white shadow-xl transform transition-transform duration-300 z-40 ${drawerOpen ? "translate-x-0" : "translate-x-full"
+        className={`fixed top-0  z-50 right-0 h-full w-full max-w-md bg-white shadow-xl transform transition-transform duration-300  ${drawerOpen ? "translate-x-0" : "translate-x-full"
           }`}
         role="dialog"
         aria-modal="true"

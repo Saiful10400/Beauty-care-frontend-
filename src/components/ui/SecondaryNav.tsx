@@ -11,27 +11,30 @@ import { ChevronDown, Menu } from "lucide-react";
 import Image from "next/image";
 import { useGetCategoriesQuery } from "@/redux/api";
 import SecondaryNavRoutes from "./SEcondaryNavRoutes";
+import { useAppDispatch } from "@/redux/featcher/hoocks";
+import { toggleCategoryId } from "@/redux/featcher/searchSlice";
+import { TCategory } from "@/types";
+import { useRouter } from "next/navigation";
 
-type Tcategory = {
-  _count: {
-    productId: number;
-  };
-  categoryId: string;
-  imageUrl: string;
-  name: string;
-  slug: string;
-};
+ 
 
 const SecondaryNav = () => {
+  const router=useRouter()
   const { data } = useGetCategoriesQuery({ offset: 0, limit: 200 });
-  const categories: Tcategory[] = data?.data?.result;
+  const categories: TCategory[] = data?.data?.result;
+
+const dispatch=useAppDispatch()
+  const dropDownHandle=(id:string)=>{
+    dispatch(toggleCategoryId(id));
+     router.push(`/all-product`);
+  }
 
   return (
     <div className="flex justify-between items-center gap-6 w-full">
       {/* Dropdown Menu */}
       <Dropdown placement="bottom-start">
         <DropdownTrigger>
-          <Button className="bg-pink-600 hover:bg-pink-700 transition text-white font-semibold text-sm px-4 py-2 rounded-md flex items-center gap-2">
+          <Button className="bg-pink-600 cursor-pointer hover:bg-pink-700 transition text-white font-semibold text-sm px-4 py-2 rounded-md flex items-center gap-2">
             <Menu className="w-4 h-4" />
             <span className="whitespace-nowrap">All Categories</span>
             <ChevronDown className="w-4 h-4" />
@@ -44,7 +47,8 @@ const SecondaryNav = () => {
         >
           {categories?.map((item) => (
             <DropdownItem
-              key={item.categoryId}
+            onClick={()=>dropDownHandle(item?._id)}
+              key={item._id}
               className="flex items-center gap-3 px-3 py-2 hover:bg-pink-50 transition text-sm"
               startContent={
                 <Image
@@ -60,9 +64,7 @@ const SecondaryNav = () => {
                 <span className="font-medium text-gray-800">
                   {item.name.length > 22 ? item.name.slice(0, 22) + "…" : item.name}
                 </span>
-                <span className="text-xs text-gray-500">
-                  {item._count?.productId} items
-                </span>
+                
               </div>
             </DropdownItem>
           ))}
