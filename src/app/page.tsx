@@ -3,6 +3,7 @@ import HomeBrandsGrid from '@/components/layout/HomeBrandsGrid';
 import CategoryGrid from '@/components/layout/HomeCategoryGrid';
 import HomeComboOfferces from '@/components/layout/HomeComboOfferces';
 import HomeNewArival from '@/components/layout/HomeNewArival';
+import HomeReviewSlider from '@/components/layout/HomeReviewSlider';
 import React from 'react';
 
 const page = () => {
@@ -16,7 +17,7 @@ const page = () => {
       <HomeComboOfferces />
       <HomeNewArival />
       <HomeBrandsGrid />
-
+      <HomeReviewSlider />
     </div>
   );
 };

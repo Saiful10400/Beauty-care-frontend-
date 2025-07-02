@@ -14,8 +14,9 @@ type tQuery = {
   brandIds: string[];
   haveOffers: boolean;
   comboOffer: boolean;
+  searchTerm:string
 };
-const defaultQuery = { offset: 0, limit: 8, haveOffers: false };
+const defaultQuery = { offset: 0, limit: 5000, haveOffers: false,searchTerm:"" };
 
 const ProductPageProducts = () => {
   const params = useAppSelector((p) => p.searchParams);
@@ -23,6 +24,9 @@ const ProductPageProducts = () => {
   const [query, setQuery] = useState<Partial<tQuery>>(defaultQuery);
 
   useEffect(() => {
+    if (params.searchTerm) {
+      setQuery((p) => ({ ...p,searchTerm:params.searchTerm}));
+    }
     if (params.price) {
       setQuery((p) => ({ ...p, minPrice: params.price.min, maxPrice: params.price.max }));
     }

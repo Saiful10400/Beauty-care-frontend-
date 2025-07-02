@@ -7,7 +7,10 @@ import { useGetBannerQuery } from '@/redux/api';
 import { TBanner } from '@/types';
 
 export default function BannerCarousel() {
-    const { data: banners, isLoading } = useGetBannerQuery<{ data: { data: TBanner[] },isLoading:boolean }>(null);
+    const { data: banners, isLoading } = useGetBannerQuery<{
+        data: { data: TBanner[] };
+        isLoading: boolean;
+    }>(null);
 
     const [currentIndex, setCurrentIndex] = useState(0);
     const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -16,11 +19,13 @@ export default function BannerCarousel() {
     const touchEndX = useRef(0);
 
     const startAutoSlide = useCallback(() => {
-        intervalRef.current = setInterval(() => {
-            setCurrentIndex((prev) =>
-                prev === banners?.data.length - 1 ? 0 : prev + 1
-            );
-        }, 2500);
+        if (banners?.data.length) {
+            intervalRef.current = setInterval(() => {
+                setCurrentIndex((prev) =>
+                    prev === banners.data.length - 1 ? 0 : prev + 1
+                );
+            }, 2500);
+        }
     }, [banners?.data.length]);
 
     const stopAutoSlide = () => {
@@ -37,15 +42,19 @@ export default function BannerCarousel() {
     }, [startAutoSlide, isLoading]);
 
     const nextSlide = () => {
-        setCurrentIndex((prev) =>
-            prev === banners?.data.length - 1 ? 0 : prev + 1
-        );
+        if (banners?.data.length) {
+            setCurrentIndex((prev) =>
+                prev === banners.data.length - 1 ? 0 : prev + 1
+            );
+        }
     };
 
     const prevSlide = () => {
-        setCurrentIndex((prev) =>
-            prev === 0 ? banners?.data.length - 1 : prev - 1
-        );
+        if (banners?.data.length) {
+            setCurrentIndex((prev) =>
+                prev === 0 ? banners.data.length - 1 : prev - 1
+            );
+        }
     };
 
     const handleTouchStart = (e: React.TouchEvent) => {
@@ -90,13 +99,13 @@ export default function BannerCarousel() {
                 {banners?.data?.map((banner: TBanner, index: number) => (
                     <div
                         key={index}
-                        className="w-full flex-shrink-0 relative h-[250px] sm:h-[300px] md:h-[400px] lg:h-[500px]"
+                        className="w-full flex-shrink-0 flex items-center justify-center relative h-[250px] sm:h-[300px] md:h-[400px] lg:h-[500px] bg-black"
                     >
                         <Image
                             src={banner.imageUrl}
                             alt={`Banner ${index + 1}`}
                             fill
-                            className="object-cover"
+                            className="object-contain sm:object-cover"
                             priority={index === 0}
                         />
                     </div>
@@ -123,8 +132,11 @@ export default function BannerCarousel() {
                     <div
                         key={index}
                         onClick={() => setCurrentIndex(index)}
-                        className={`w-3 h-3 rounded-full cursor-pointer ${currentIndex === index ? 'bg-[#4b274b]' : 'bg-gray-300'
-                            }`}
+                        className={`w-3 h-3 rounded-full cursor-pointer ${
+                            currentIndex === index
+                                ? 'bg-[#4b274b]'
+                                : 'bg-gray-300'
+                        }`}
                     />
                 ))}
             </div>

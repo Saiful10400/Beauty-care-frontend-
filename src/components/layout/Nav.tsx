@@ -16,7 +16,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import SecondaryNav from "../ui/SecondaryNav";
-import { useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useAppSelector, useAppDispatch } from "@/redux/featcher/hoocks";
 import {
   clearCart,
@@ -26,6 +26,8 @@ import {
 } from "@/redux/featcher/CartSlice";
 import { taugleDrawer } from "@/redux/featcher/generalSlice";
 import { Tgeneral, TOrder } from "@/types";
+import { resetFilters, setSearchTerm } from "@/redux/featcher/searchSlice";
+import { useRouter } from "next/navigation";
 
 const Nav = () => {
   const { data, isLoading } = useGetGeneralQuery<{
@@ -119,6 +121,36 @@ const Nav = () => {
 
   };
 
+  const [query, setQuery] = useState('');
+  const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
+
+  const move = useRouter()
+
+  const handleSearch = useCallback(async (searchText: string) => {
+
+    dispatch(resetFilters())
+    if (searchText.length !== 0) {
+      dispatch(setSearchTerm(searchText))
+    }
+    move.push("/all-product")
+  }, [dispatch, move])
+
+
+  const searchHandle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setQuery(value);
+
+    // Clear previous debounce
+    if (debounceTimeout.current) {
+      clearTimeout(debounceTimeout.current);
+    }
+
+    // Set new debounce
+    debounceTimeout.current = setTimeout(() => {
+      handleSearch(value);
+    }, 500); // adjust debounce time (ms)
+  };
+
   return (
     <>
       {/* HEADER */}
@@ -146,7 +178,7 @@ const Nav = () => {
                 }`}
             >
               <div className="relative">
-                <input
+                <input value={query} onChange={searchHandle}
                   type="text"
                   placeholder="কি খুঁজছেন লিখুন..."
                   className="w-full border border-gray-300 rounded-full py-2.5 sm:py-3 pl-5 pr-12 text-sm shadow-sm focus:border-pink-500 focus:ring-pink-500"
