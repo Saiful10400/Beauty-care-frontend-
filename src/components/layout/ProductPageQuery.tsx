@@ -12,6 +12,7 @@ import {
   toggleOfferType,
   toggleBrandId,
   toggleCategoryId,
+  resetFilters,
 } from '@/redux/featcher/searchSlice';
 
 const MIN = 1;
@@ -90,6 +91,7 @@ const ProductPageQuery = () => {
   };
 
   const handleToggleOffer = (id: string) => {
+    dispatch(resetFilters())
     dispatch(toggleOfferType(id));
     setFiltersOpen(false);
   };

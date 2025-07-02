@@ -3,36 +3,39 @@
 import Image from 'next/image';
 import SectionTittle from '../ui/SectionTittle';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useAppDispatch } from '@/redux/featcher/hoocks';
+import { resetFilters, toggleCategoryId } from '@/redux/featcher/searchSlice';
 
 export const categories = [
   {
     title: 'FRAGRANCE',
-    route: 'fragrance',
+    route: '684a426ad3c3164ebd459cc5',
     imageUrl: 'https://i.ibb.co/cS2Rjh6G/FRAGRANCE-16x9.webp',
   },
   {
     title: 'MEN’S COLLECTION',
-    route: 'mens-cologne',
+    route: '685ae98254d14e13ac1c1fac',
     imageUrl: 'https://i.ibb.co/6cNSv1SZ/Metro-Society-GA-SN-190224-00.jpg',
   },
   {
     title: 'HAIRCARE',
-    route: 'haircare',
+    route: '6864cc14188c624ff7e07df3',
     imageUrl: 'https://i.ibb.co/3YmpfQ0N/best-korean-hair-products-in-2023-3780x.webp',
   },
   {
     title: 'SKINCARE',
-    route: 'skincare',
+    route: '6864cb54188c624ff7e07dea',
     imageUrl: 'https://i.ibb.co/rKXMVndh/18111115-untitled-design-2-cover-1920x1200.png',
   },
   {
     title: 'WOMEN’S COLLECTION',
-    route: 'gift-sets',
+    route: '684a4339d3c3164ebd459ccc',
     imageUrl: 'https://i.ibb.co/xwMj0NN/Gif-set-Page-50x50-Section-Creatives-05-082ebdde-6c61-485c-8694-0d15e64f7b04.webp',
   },
   {
     title: 'BODYCARE',
-    route: 'best-sellers',
+    route: '6864cc5d188c624ff7e07df7',
     imageUrl: 'https://i.ibb.co/hFbRwGxw/beautiful-spa-composition-massage-table-wellness-center-copyspace.webp',
   },
 ];
@@ -43,13 +46,22 @@ type TCategoryCard = {
   imageUrl: string;
 };
 
-const handleShopNow = (route: string) => {
-  console.log(`Navigating to ${route}`);
-};
 
- 
+
+
 
 export default function CategoryGrid() {
+
+  const move = useRouter()
+  const dispatch = useAppDispatch()
+
+  const handleShopNow = (route: string) => {
+    dispatch(resetFilters())
+    dispatch(toggleCategoryId(route))
+    move.push("/all-product")
+  };
+
+
   return (
     <div className="max-w-[1400px] mx-auto px-4 py-12  ">
       <SectionTittle tittle="Shop by Category" />

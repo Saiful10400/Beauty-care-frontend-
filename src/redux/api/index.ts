@@ -185,7 +185,7 @@ export const baseApi = createApi({
 
     // Get general settings
     getBanner: builder.query({
-      query: () => `/banner/get`,
+      query: () => `/banner/get?isActive=true`,
       providesTags: ["banner"],
     }),
 

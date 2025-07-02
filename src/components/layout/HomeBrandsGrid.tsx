@@ -5,10 +5,11 @@ import SectionTittle from '../ui/SectionTittle';
 import { useGetBrandsQuery } from '@/redux/api';
 import { Tbrand } from '@/types';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useAppDispatch } from '@/redux/featcher/hoocks';
+import { resetFilters, toggleBrandId } from '@/redux/featcher/searchSlice';
 
-const handleShopNow = (route: string) => {
-  console.log(`Navigating to ${route}`);
-};
+
 
 // Skeleton Card Component
 function BrandCardSkeleton() {
@@ -27,6 +28,13 @@ function BrandCardSkeleton() {
 
 export default function HomeBrandsGrid() {
   const { data: brands, isLoading } = useGetBrandsQuery({ offset: 0, limit: 8 });
+  const move = useRouter()
+  const dispatch = useAppDispatch()
+  const handleShopNow = (id: string) => {
+    dispatch(resetFilters())
+    dispatch(toggleBrandId(id))
+    move.push("/all-product")
+  };
 
   return (
     <div className="max-w-[1400px] mx-auto px-4 py-16">
@@ -35,35 +43,35 @@ export default function HomeBrandsGrid() {
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8 mt-10">
         {isLoading
           ? Array.from({ length: 8 }).map((_, i) => (
-              <BrandCardSkeleton key={i} />
-            ))
+            <BrandCardSkeleton key={i} />
+          ))
           : brands?.data?.result?.map((brand: Tbrand, index: number) => (
-              <div
-                key={index}
-                className="relative group border border-[#e0e0e0] bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-shadow duration-300"
-              >
-                <div className="flex items-center justify-center h-32">
-                  <Image
-                    src={brand.logoUrl as string}
-                    alt={brand.name}
-                    width={120}
-                    height={120}
-                    className="object-contain max-h-28 transition-transform duration-300 group-hover:scale-105"
-                  />
-                </div>
-                <div className="text-center mt-6">
-                  <h3 className="text-lg font-semibold text-[#333] uppercase">
-                    {brand.name}
-                  </h3>
-                  <button
-                    onClick={() => handleShopNow(brand.name)}
-                    className="mt-4 inline-block cursor-pointer px-5 py-2 text-sm font-medium text-white bg-[#d88c9a] rounded-full hover:bg-[#b56f7d] transition-all duration-300"
-                  >
-                    Shop Now
-                  </button>
-                </div>
+            <div
+              key={index}
+              className="relative group border border-[#e0e0e0] bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-shadow duration-300"
+            >
+              <div className="flex items-center justify-center h-32">
+                <Image
+                  src={brand.logoUrl as string}
+                  alt={brand.name}
+                  width={120}
+                  height={120}
+                  className="object-contain max-h-28 transition-transform duration-300 group-hover:scale-105"
+                />
               </div>
-            ))}
+              <div className="text-center mt-6">
+                <h3 className="text-lg font-semibold text-[#333] uppercase">
+                  {brand.name}
+                </h3>
+                <button
+                  onClick={() => handleShopNow(brand._id)}
+                  className="mt-4 inline-block cursor-pointer px-5 py-2 text-sm font-medium text-white bg-[#d88c9a] rounded-full hover:bg-[#b56f7d] transition-all duration-300"
+                >
+                  Shop Now
+                </button>
+              </div>
+            </div>
+          ))}
       </div>
 
       {/* Show All Button */}

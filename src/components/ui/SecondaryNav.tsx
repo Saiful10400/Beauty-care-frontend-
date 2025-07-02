@@ -29,12 +29,19 @@ const dispatch=useAppDispatch()
      router.push(`/all-product`);
   }
 
+  function scrollToTop() {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth' // makes it smooth scrolling
+  });
+}
+
   return (
     <div className="flex justify-between items-center gap-6 w-full">
       {/* Dropdown Menu */}
       <Dropdown placement="bottom-start">
         <DropdownTrigger>
-          <Button className="bg-pink-600 cursor-pointer hover:bg-pink-700 transition text-white font-semibold text-sm px-4 py-2 rounded-md flex items-center gap-2">
+          <Button onClick={scrollToTop} className="bg-pink-600 cursor-pointer hover:bg-pink-700 transition text-white font-semibold text-sm px-4 py-2 rounded-md flex items-center gap-2">
             <Menu className="w-4 h-4" />
             <span className="whitespace-nowrap">All Categories</span>
             <ChevronDown className="w-4 h-4" />

@@ -3,18 +3,18 @@ import { useGetProductQuery } from "@/redux/api";
 import SectionTittle from "../ui/SectionTittle";
 import ProductCard from "../ui/ProductCard";
 import { tProduct } from "@/types";
-import { useRouter } from "next/navigation";
 import { useAppDispatch } from "@/redux/featcher/hoocks";
-import { resetFilters } from "@/redux/featcher/searchSlice";
+import { setOfferTypes } from "@/redux/featcher/searchSlice";
+import { useRouter } from "next/navigation";
 
-const HomeNewArival = () => {
-    const { data: products, isLoading } = useGetProductQuery({ offset: 0, limit: 8, sort: -1, inStock: true });
-    const move = useRouter()
-    const dispatch = useAppDispatch()
+const HomeComboOfferces = () => {
+    const { data: products, isLoading } = useGetProductQuery({ offset: 0, limit: 8, sort: -1, comboOffer: true });
+    const dispatch=useAppDispatch()
+    const move=useRouter()
     return (
         <div className="sm:mb-6">
             <div className="max-w-[1400px] mx-auto px-4 py-12">
-                <SectionTittle tittle="NEW ARRIVALS!" />
+                <SectionTittle tittle="combo offers!" />
 
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 mt-8">
                     {isLoading
@@ -31,17 +31,17 @@ const HomeNewArival = () => {
             </div>
 
             <div className="flex justify-center">
-                <button onClick={() =>{
-                    dispatch(resetFilters())
-                    move.push("/all-product")
+                <button onClick={()=>{
+                    dispatch(setOfferTypes(["combo"]));
+                       move.push("/all-product")
                 }}
                     className="px-6 py-3 border border-gray-500 cursor-pointer text-black font-bold hover:bg-gray-100 transition-all duration-300"
                 >
-                    ALL PRODUCT
+                    ALL COMBOS
                 </button>
             </div>
         </div>
     );
 };
 
-export default HomeNewArival;
+export default HomeComboOfferces;

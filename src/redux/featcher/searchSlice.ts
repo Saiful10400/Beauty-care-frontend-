@@ -68,7 +68,7 @@ const filterSlice = createSlice({
       }
     },
     resetFilters(state) {
-      state.price = { min: 0, max: 0 };
+      state.price = { min: 10, max: 5000 };
       state.brandIds = [];
       state.categoryIds = [];
       state.searchTerm = "";
