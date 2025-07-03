@@ -1,4 +1,4 @@
-# Beauty Care E-commerce Website (Frontend)
+# KB Touch E-commerce Website (Frontend)
 
 Welcome to the **KB Touch** e-commerce platform main website. This is the customer-facing frontend application where users can browse products, manage their carts, and place orders seamlessly.
 
