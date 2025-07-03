@@ -7,21 +7,21 @@ import { toggleBrandId } from '@/redux/featcher/searchSlice';
 import { Tbrand } from '@/types';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
- 
+
 import React, { useEffect } from 'react';
 
 const Brand = () => {
 
-  useEffect(() => {
-    scrollToTop()
-  }, [])
+    useEffect(() => {
+        scrollToTop()
+    }, [])
 
 
 
     const { data: brands } = useGetBrandsQuery({ offset: 0, limit: 5000 })
 
     const move = useRouter()
-    const dispatch=useAppDispatch()
+    const dispatch = useAppDispatch()
 
     const handleShopNow = (id: string) => {
         move.push("/all-product")
@@ -32,7 +32,11 @@ const Brand = () => {
         <div>
             <PageHeaderRouting />
 
+            {
+                brands?.data?.result?.length === 0 && <h1 className='text-center font-semibold'>No Data found</h1>
 
+
+            }
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8 mt-10">
                 {brands?.data?.result?.map((brand: Tbrand, index: number) => (
                     <div

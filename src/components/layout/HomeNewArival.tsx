@@ -11,6 +11,13 @@ const HomeNewArival = () => {
     const { data: products, isLoading } = useGetProductQuery({ offset: 0, limit: 8, sort: -1, inStock: true });
     const move = useRouter()
     const dispatch = useAppDispatch()
+
+
+    if (products?.data?.result?.length === 0) {
+        return null
+    }
+
+
     return (
         <div className="sm:mb-6">
             <div className="max-w-[1400px] mx-auto px-4 py-12">
@@ -31,7 +38,7 @@ const HomeNewArival = () => {
             </div>
 
             <div className="flex justify-center">
-                <button onClick={() =>{
+                <button onClick={() => {
                     dispatch(resetFilters())
                     move.push("/all-product")
                 }}

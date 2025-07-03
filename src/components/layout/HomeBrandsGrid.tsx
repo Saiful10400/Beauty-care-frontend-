@@ -36,6 +36,11 @@ export default function HomeBrandsGrid() {
     move.push("/all-product")
   };
 
+
+      if(brands?.data?.result?.length===0){
+        return null
+    }
+
   return (
     <div className="max-w-[1400px] mx-auto px-4 py-16">
       <SectionTittle tittle="Featured Brands" />

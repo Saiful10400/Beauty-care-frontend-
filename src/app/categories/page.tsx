@@ -15,7 +15,7 @@ const Category = () => {
     }, [])
 
 
-    const { data: brands } = useGetCategoriesQuery({ offset: 0, limit: 5000 })
+    const { data: categories } = useGetCategoriesQuery({ offset: 0, limit: 5000 })
 
     const move = useRouter()
     const dispatch = useAppDispatch()
@@ -29,9 +29,13 @@ const Category = () => {
         <div>
             <PageHeaderRouting />
 
+            {
+                categories?.data?.result?.length === 0 && <h1 className='text-center font-semibold'>No Data found</h1>
 
+
+            }
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8 mt-10">
-                {brands?.data?.result?.map((Category: TCategory, index: number) => (
+                {categories?.data?.result?.map((Category: TCategory, index: number) => (
                     <div
                         key={index}
                         className="relative group border border-[#e0e0e0] bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-shadow duration-300"
