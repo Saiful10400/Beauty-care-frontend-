@@ -160,7 +160,7 @@ const Nav = () => {
       {/* HEADER */}
       <header className="w-full bg-white shadow-sm sticky top-0 z-30">
         <div className="mx-auto max-w-[1400px] px-4">
-          <div className="relative flex items-center justify-between py-3 sm:py-4 gap-2 sm:gap-6">
+          <div className="relative flex items-center justify-between py-2 sm:py-0 gap-2 sm:gap-6">
             {/* Mobile Search Toggle */}
             <div className="flex items-center gap-2 sm:hidden z-10">
               {!mobileSearchOpen && (
@@ -212,7 +212,7 @@ const Nav = () => {
                     height={300}
                     src={data?.data?.logoUrl}
                     alt="Logo"
-                    className="w-20 sm:w-36 md:w-44 lg:w-52 h-auto object-contain"
+                    className="   w-auto md:w-44 lg:w-52 h-[60px] sm:h-[120px] object-contain"
                   />
                 </Link>
               )}
@@ -238,7 +238,7 @@ const Nav = () => {
             </div>
           </div>
         </div>
-        <div className="border-t bg-white shadow-sm">
+        <div className="border-t border-gray-300 bg-white shadow-sm">
           <div className="mx-auto max-w-[1400px] px-4 py-2 overflow-x-auto">
             <SecondaryNav />
           </div>
