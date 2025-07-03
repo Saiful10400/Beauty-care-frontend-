@@ -1,14 +1,20 @@
 "use client"
 import PageHeaderRouting from '@/components/ui/PageHeaderRouteing';
+import scrollToTop from '@/lib/scroolToTop';
 import { useGetCategoriesQuery } from '@/redux/api';
 import { useAppDispatch } from '@/redux/featcher/hoocks';
 import { toggleCategoryId } from '@/redux/featcher/searchSlice';
 import { TCategory } from '@/types';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 const Category = () => {
+    useEffect(() => {
+        scrollToTop()
+    }, [])
+
+
     const { data: brands } = useGetCategoriesQuery({ offset: 0, limit: 5000 })
 
     const move = useRouter()

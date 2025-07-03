@@ -1,5 +1,6 @@
 "use client";
 
+import formatUrl from "@/lib/formateUrl";
 import { useGetGeneralQuery } from "@/redux/api";
 import { Tgeneral } from "@/types";
 import { Instagram, Facebook, Mail } from "lucide-react";
@@ -90,12 +91,12 @@ const Footer = () => {
           <div className="flex space-x-4">
             {[
               {
-                href: general?.socialLinks?.facebook ?? "https://facebook.com",
+                href: formatUrl(general?.socialLinks?.facebook as string),
                 label: "Facebook",
                 icon: Facebook,
               },
               {
-                href: general?.socialLinks?.instagram ?? "https://instagram.com",
+                href: formatUrl(general?.socialLinks?.instagram as string),
                 label: "Instagram",
                 icon: Instagram,
               },

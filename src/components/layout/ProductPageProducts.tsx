@@ -14,18 +14,26 @@ type tQuery = {
   brandIds: string[];
   haveOffers: boolean;
   comboOffer: boolean;
-  searchTerm:string
+  searchTerm: string
 };
-const defaultQuery = { offset: 0, limit: 5000, haveOffers: false,searchTerm:"" };
+const defaultQuery = { offset: 0, limit: 5000, haveOffers: false, searchTerm: "" };
 
 const ProductPageProducts = () => {
   const params = useAppSelector((p) => p.searchParams);
 
   const [query, setQuery] = useState<Partial<tQuery>>(defaultQuery);
+  const [skip, setSkip] = useState(false)
 
   useEffect(() => {
+    setSkip(false)
     if (params.searchTerm) {
-      setQuery((p) => ({ ...p,searchTerm:params.searchTerm}));
+      setQuery((p) => ({ ...p, searchTerm: params.searchTerm }));
+    }
+    if (!params.searchTerm) {
+      setQuery((p) => {
+        const { searchTerm, ...rest } = p;
+        return rest;
+      });
     }
     if (params.price) {
       setQuery((p) => ({ ...p, minPrice: params.price.min, maxPrice: params.price.max }));
@@ -64,10 +72,15 @@ const ProductPageProducts = () => {
     }
   }, [params]);
 
-  const { data: products, isLoading } = useGetProductQuery(query);
+  const { data: products, isLoading } = useGetProductQuery(query, { skip });
+ console.log({ isLoading },1)
+ 
+
+  console.log({ isLoading },2)
 
   return (
     <div>
+
       <div className="max-w-[1400px] mx-auto px-4 py-12">
         {isLoading ? (
           <div className="flex justify-center items-center h-40">

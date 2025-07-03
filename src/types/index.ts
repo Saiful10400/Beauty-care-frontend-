@@ -3,7 +3,7 @@ export type TBanner = {
   title: string;
   imageUrl: string;
   isActive: boolean;
-  type: "page" | "category" | "product" | string; // extend as needed
+  type: string;
   asset: string;
   createdAt: string; // ISO date string
   updatedAt: string; // ISO date string
@@ -90,5 +90,5 @@ export type TOrder = {
   isConfirmed?: boolean; // Confirmed by admin after phone call
   isShipped?: boolean; // Has the order been sent to courier?
   freeGiftEligible: boolean;
-  giftProduct?: {name:string,imageUrl:string};
+  giftProduct?: { name: string; imageUrl: string };
 };

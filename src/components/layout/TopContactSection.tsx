@@ -1,5 +1,6 @@
 "use client";
 
+import formatUrl from '@/lib/formateUrl';
 import { useGetGeneralQuery } from '@/redux/api';
 import { Tgeneral } from '@/types';
 import {
@@ -12,6 +13,8 @@ import {
 export default function TopContactSection() {
   const { data, isLoading } = useGetGeneralQuery(null);
   const generel: Tgeneral = data?.data;
+
+
 
   if (isLoading) {
     return (
@@ -58,10 +61,10 @@ export default function TopContactSection() {
 
         {/* Right Section */}
         <div className="flex flex-wrap justify-center md:justify-end items-center gap-3 text-xs sm:text-sm">
-          <a href={generel?.socialLinks?.facebook}>
+          <a   target='_blank' href={formatUrl(generel?.socialLinks?.facebook)}>
             <Facebook size={16} className="hover:text-blue-500 cursor-pointer" />
           </a>
-          <a href={generel?.socialLinks?.instagram}>
+          <a target='_blank' href={formatUrl(generel?.socialLinks?.instagram)}>
             <Instagram size={16} className="hover:text-pink-500 cursor-pointer" />
           </a>
         </div>

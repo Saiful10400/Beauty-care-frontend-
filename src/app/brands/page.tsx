@@ -1,5 +1,6 @@
 "use client"
 import PageHeaderRouting from '@/components/ui/PageHeaderRouteing';
+import scrollToTop from '@/lib/scroolToTop';
 import { useGetBrandsQuery } from '@/redux/api';
 import { useAppDispatch } from '@/redux/featcher/hoocks';
 import { toggleBrandId } from '@/redux/featcher/searchSlice';
@@ -7,9 +8,16 @@ import { Tbrand } from '@/types';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
  
-import React from 'react';
+import React, { useEffect } from 'react';
 
 const Brand = () => {
+
+  useEffect(() => {
+    scrollToTop()
+  }, [])
+
+
+
     const { data: brands } = useGetBrandsQuery({ offset: 0, limit: 5000 })
 
     const move = useRouter()

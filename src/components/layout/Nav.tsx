@@ -34,14 +34,18 @@ const Nav = () => {
     isLoading: boolean;
     data: { data: { name: string; logoUrl: string } };
   }>(null);
-
+  const [query, setQuery] = useState('');
   const dispatch = useAppDispatch();
   const { drawerOpen } = useAppSelector((p) => p.general);
   const { items } = useAppSelector((state) => state.cartProduct);
 
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const toggleDrawer = () => dispatch(taugleDrawer());
-  const toggleMobileSearch = () => setMobileSearchOpen((open) => !open);
+  const toggleMobileSearch = () => {
+    setQuery("")
+    dispatch(setSearchTerm(""))
+    setMobileSearchOpen((open) => !open)
+  };
 
   const cartTotalProductCount = items.reduce((t, n) => t + n.quantity, 0);
 
@@ -121,7 +125,7 @@ const Nav = () => {
 
   };
 
-  const [query, setQuery] = useState('');
+
   const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
 
   const move = useRouter()

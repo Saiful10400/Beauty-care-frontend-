@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams, useSearchParams } from "next/navigation";
@@ -8,8 +8,16 @@ import { Tbrand, TCategory } from "@/types";
 import { useAppDispatch } from "@/redux/featcher/hoocks";
 import { addToCart } from "@/redux/featcher/CartSlice";
 import { taugleDrawer } from "@/redux/featcher/generalSlice";
+import scrollToTop from "@/lib/scroolToTop";
 
 export default function ProductDetails() {
+
+
+  useEffect(() => {
+    scrollToTop()
+  }, [])
+
+
   const params = useParams();
   const slug = params.id as string;
   const [currentIndex, setCurrentIndex] = useState(0);

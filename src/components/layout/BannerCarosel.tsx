@@ -5,6 +5,9 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useGetBannerQuery } from '@/redux/api';
 import { TBanner } from '@/types';
+import { useRouter } from 'next/navigation';
+import { useAppDispatch } from '@/redux/featcher/hoocks';
+import { toggleOfferType } from '@/redux/featcher/searchSlice';
 
 export default function BannerCarousel() {
     const { data: banners, isLoading } = useGetBannerQuery<{
@@ -12,6 +15,8 @@ export default function BannerCarousel() {
         isLoading: boolean;
     }>(null);
 
+    const move = useRouter()
+    const dispatch = useAppDispatch()
     const [currentIndex, setCurrentIndex] = useState(0);
     const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -84,6 +89,8 @@ export default function BannerCarousel() {
         );
     }
 
+
+
     return (
         <div
             className="relative w-full overflow-hidden"
@@ -97,9 +104,20 @@ export default function BannerCarousel() {
                 style={{ transform: `translateX(-${currentIndex * 100}%)` }}
             >
                 {banners?.data?.map((banner: TBanner, index: number) => (
-                    <div
+                    <button onClick={() => {
+                        if (banner.type === "page") {
+                            move.push(`/${banner.asset}`)
+                        } else if (banner.type === "offer") {
+                            if (banner.asset === "combo") {
+                                dispatch(toggleOfferType("combo"))
+                            } else if (banner.asset === "discount") {
+                                dispatch(toggleOfferType("discount"))
+                            }
+                            move.push("/all-product")
+                        }
+                    }}
                         key={index}
-                        className="w-full flex-shrink-0 flex items-center justify-center relative h-[250px] sm:h-[300px] md:h-[400px] lg:h-[500px] bg-black"
+                        className="w-full cursor-pointer flex-shrink-0 flex items-center justify-center relative h-[250px] sm:h-[300px] md:h-[400px] lg:h-[500px] bg-black"
                     >
                         <Image
                             src={banner.imageUrl}
@@ -108,20 +126,20 @@ export default function BannerCarousel() {
                             className="object-contain sm:object-cover"
                             priority={index === 0}
                         />
-                    </div>
+                    </button>
                 ))}
             </div>
 
             {/* Arrows */}
             <button
                 onClick={prevSlide}
-                className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white/70 hover:bg-white text-black p-2 rounded-full shadow z-10"
+                className="absolute cursor-pointer top-1/2 left-4 transform -translate-y-1/2 bg-white/70 hover:bg-white text-black p-2 rounded-full shadow z-10"
             >
                 <ChevronLeft size={20} />
             </button>
             <button
                 onClick={nextSlide}
-                className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-white/70 hover:bg-white text-black p-2 rounded-full shadow z-10"
+                className="absolute cursor-pointer top-1/2 right-4 transform -translate-y-1/2 bg-white/70 hover:bg-white text-black p-2 rounded-full shadow z-10"
             >
                 <ChevronRight size={20} />
             </button>
@@ -132,11 +150,10 @@ export default function BannerCarousel() {
                     <div
                         key={index}
                         onClick={() => setCurrentIndex(index)}
-                        className={`w-3 h-3 rounded-full cursor-pointer ${
-                            currentIndex === index
+                        className={`w-3 h-3 rounded-full cursor-pointer ${currentIndex === index
                                 ? 'bg-[#4b274b]'
                                 : 'bg-gray-300'
-                        }`}
+                            }`}
                     />
                 ))}
             </div>

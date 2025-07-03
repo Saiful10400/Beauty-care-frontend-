@@ -1,9 +1,20 @@
+"use client"
+
+
 import ProductPageProducts from '@/components/layout/ProductPageProducts';
 import ProductPageQuery from '@/components/layout/ProductPageQuery';
 import PageHeaderRouting from '@/components/ui/PageHeaderRouteing';
-import React from 'react';
+import scrollToTop from '@/lib/scroolToTop';
+import React, { useEffect } from 'react';
 
-const page = () => {
+const AllProduct = () => {
+
+
+    useEffect(() => {
+        scrollToTop()
+    }, [])
+
+
     return (
         <div className="  px-4  py-6">
             <PageHeaderRouting />
@@ -22,4 +33,4 @@ const page = () => {
     );
 };
 
-export default page;
+export default AllProduct;
