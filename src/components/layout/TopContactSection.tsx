@@ -14,8 +14,6 @@ export default function TopContactSection() {
   const { data, isLoading } = useGetGeneralQuery(null);
   const generel: Tgeneral = data?.data;
 
-
-
   if (isLoading) {
     return (
       <div className="bg-[#1E1E38] text-white text-sm py-2 px-4 animate-pulse">
@@ -55,16 +53,29 @@ export default function TopContactSection() {
           <div className="flex items-center gap-1 text-[#e5017a]">
             <Phone size={14} />
             <span className="text-[#e5017a] hidden sm:inline">Hotline:</span>
-            <span className='text-white'>{generel?.phone}</span>
+            <a
+              href={`tel:+88${generel?.phone}`}
+              className="hover:underline text-white"
+            >
+              {generel?.phone}
+            </a>
           </div>
         </div>
 
         {/* Right Section */}
         <div className="flex flex-wrap justify-center md:justify-end items-center gap-3 text-xs sm:text-sm">
-          <a   target='_blank' href={formatUrl(generel?.socialLinks?.facebook)}>
+          <a
+            target="_blank"
+            href={formatUrl(generel?.socialLinks?.facebook)}
+            rel="noopener noreferrer"
+          >
             <Facebook size={16} className="hover:text-blue-500 cursor-pointer" />
           </a>
-          <a target='_blank' href={formatUrl(generel?.socialLinks?.instagram)}>
+          <a
+            target="_blank"
+            href={formatUrl(generel?.socialLinks?.instagram)}
+            rel="noopener noreferrer"
+          >
             <Instagram size={16} className="hover:text-pink-500 cursor-pointer" />
           </a>
         </div>

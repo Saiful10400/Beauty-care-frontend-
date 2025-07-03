@@ -162,7 +162,7 @@ export default function ProductCard({ product }: { product: tProduct }) {
             : "bg-gray-200 text-gray-500 cursor-not-allowed"
             }`}
         >
-          {product.inStock ? "Add to Bag" : "Out of Stock"}
+          {product.inStock ? "Buy Now" : "Out of Stock"}
         </button>
       </div>
     </div>

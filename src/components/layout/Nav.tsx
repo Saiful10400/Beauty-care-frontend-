@@ -80,7 +80,7 @@ const Nav = () => {
   // };
   const qualifiesForGift = offerAvailable && subtotal >= general?.freeGift?.buyAbove;
 
-  const [createOrder] = useCreateAOrderMutation()
+  const [createOrder, { isLoading: orderLoading }] = useCreateAOrderMutation()
   const handleSubmit = async () => {
     const newErrors = { name: "", phone: "", address: "" };
     let hasError = false;
@@ -119,7 +119,7 @@ const Nav = () => {
 
     if (response?.data?.statusCode === 200) {
 
-      alert("✅ অর্ডার সফলভাবে জমা হয়েছে!");
+      alert(`✅ অর্ডার সফলভাবে জমা হয়েছে! অর্ডার কনফার্ম এর জন্য আপনার সাথে যোগাযোগ করা হবে,${payload.customerPhone} - এই নাম্বারে।`);
       dispatch(clearCart())
     }
 
@@ -472,11 +472,12 @@ const Nav = () => {
 
                 {/* Submit */}
                 <button
+                  disabled={isLoading}
                   type="button"
                   onClick={handleSubmit}
                   className="w-full bg-pink-600 hover:bg-pink-700 text-white font-semibold py-2 rounded cursor-pointer"
                 >
-                  ক্যাশ অন ডেলিভারি
+                  {!orderLoading ? "ক্যাশ অন ডেলিভারি অর্ডার" : "....."}
                 </button>
               </form>
             </>
