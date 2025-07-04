@@ -74,6 +74,13 @@ const filterSlice = createSlice({
       state.searchTerm = "";
       state.offerTypes = [];
     },
+    withoutofferReset(state) {
+      state.price = { min: 10, max: 5000 };
+      state.brandIds = [];
+      state.categoryIds = [];
+      state.searchTerm = "";
+      
+    },
   },
 });
 
@@ -89,6 +96,7 @@ export const {
   resetFilters,
   setMaxPrice,
   setMinPrice,
+  withoutofferReset
 } = filterSlice.actions;
 
 export default filterSlice.reducer;

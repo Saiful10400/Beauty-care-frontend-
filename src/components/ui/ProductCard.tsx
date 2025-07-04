@@ -60,7 +60,7 @@ export default function ProductCard({ product }: { product: tProduct }) {
           src={product.images?.[0]}
           alt={product.name}
           fill
-          className="object-cover group-hover:scale-105 transition-transform duration-300"
+          className="object-cover sm:object-contain group-hover:scale-105 transition-transform duration-300"
         />
       </div>
 

@@ -106,12 +106,12 @@ export default function ProductDetails() {
       <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
         {/* Left: Image carousel */}
         <div className="md:col-span-3 flex flex-col gap-2">
-          <div className="relative w-full h-[400px] rounded-lg overflow-hidden border">
+          <div className="relative w-full h-[400px] rounded-lg overflow-hidden border border-gray-300">
             <Image
               src={product.images[currentIndex]}
               alt={`Product image ${currentIndex + 1}`}
               fill
-              className="object-cover transition duration-300"
+              className="object-cover sm:object-contain transition duration-300"
             />
             {/* Discount badge: only if NOT combo */}
             {!product.isComboOffer && discountPercent > 0 && (
@@ -141,7 +141,7 @@ export default function ProductDetails() {
               <button
                 key={i}
                 onClick={() => setCurrentIndex(i)}
-                className={`relative cursor-pointer w-20 h-20 border rounded overflow-hidden ${i === currentIndex ? "ring-2 ring-pink-500" : ""
+                className={`relative cursor-pointer border border-gray-300 w-20 h-20 rounded overflow-hidden ${i === currentIndex ? "ring-2 ring-pink-500" : ""
                   }`}
                 aria-label={`Select image ${i + 1}`}
               >
@@ -149,7 +149,7 @@ export default function ProductDetails() {
                   src={img}
                   alt={`Thumbnail ${i + 1}`}
                   fill
-                  className="object-cover"
+                  className="object-cover sm:object-contain"
                 />
               </button>
             ))}

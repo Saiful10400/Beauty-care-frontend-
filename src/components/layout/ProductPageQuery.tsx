@@ -12,7 +12,8 @@ import {
   toggleOfferType,
   toggleBrandId,
   toggleCategoryId,
-  resetFilters,
+
+  withoutofferReset,
 } from '@/redux/featcher/searchSlice';
 
 const MIN = 1;
@@ -91,7 +92,7 @@ const ProductPageQuery = () => {
   };
 
   const handleToggleOffer = (id: string) => {
-    dispatch(resetFilters())
+    dispatch(withoutofferReset())
     dispatch(toggleOfferType(id));
     setFiltersOpen(false);
   };
@@ -126,9 +127,8 @@ const ProductPageQuery = () => {
       {/* Sidebar container */}
       <aside
         id="filters-panel"
-        className={`${
-          filtersOpen ? 'block' : 'hidden'
-        } md:block w-full md:w-[300px] p-4 space-y-6 text-sm text-[#333] bg-white md:bg-transparent border-r md:border-r-0 fixed md:static top-0 md:top-auto left-0 h-full md:h-auto z-30 overflow-y-auto md:overflow-visible shadow-lg md:shadow-none`}
+        className={`${filtersOpen ? 'block' : 'hidden'
+          } md:block w-full md:w-[300px] p-4 space-y-6 text-sm text-[#333] bg-white md:bg-transparent border-r md:border-r-0 fixed md:static top-0 md:top-auto left-0 h-full md:h-auto z-30 overflow-y-auto md:overflow-visible shadow-lg md:shadow-none`}
         style={{ maxWidth: '300px' }}
       >
         {/* Close button inside sidebar for mobile */}

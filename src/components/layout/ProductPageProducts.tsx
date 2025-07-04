@@ -16,7 +16,7 @@ type tQuery = {
   comboOffer: boolean;
   searchTerm: string
 };
-const defaultQuery = { offset: 0, limit: 5000, haveOffers: false, searchTerm: "" };
+const defaultQuery = { offset: 0, limit: 5000,  searchTerm: "" };
 
 const ProductPageProducts = () => {
   const params = useAppSelector((p) => p.searchParams);
@@ -61,7 +61,7 @@ const ProductPageProducts = () => {
         setQuery({ ...defaultQuery, haveOffers: true, comboOffer: false });
       }
       if (params.offerTypes.includes("combo")) {
-        setQuery({ ...defaultQuery, comboOffer: true, haveOffers: false });
+        setQuery({ ...defaultQuery, comboOffer: true });
       }
     }
     if (params.offerTypes.length === 0) {
@@ -73,10 +73,7 @@ const ProductPageProducts = () => {
   }, [params]);
 
   const { data: products, isLoading } = useGetProductQuery(query, { skip });
- console.log({ isLoading },1)
  
-
-  console.log({ isLoading },2)
 
   return (
     <div>
