@@ -9,6 +9,7 @@ import { useAppDispatch } from "@/redux/featcher/hoocks";
 import { addToCart } from "@/redux/featcher/CartSlice";
 import { taugleDrawer } from "@/redux/featcher/generalSlice";
 import scrollToTop from "@/lib/scroolToTop";
+import NotFoundProduct from "@/components/ui/NotFoundProduct";
 
 export default function ProductDetails() {
 
@@ -57,24 +58,31 @@ export default function ProductDetails() {
 
   const product = data?.data;
 
-  const hasDiscount =
-    product.discountPrice && product.discountPrice < product.price;
 
-  const displayPrice = hasDiscount ? product.discountPrice : product.price;
+  if (!product) return (
+    <NotFoundProduct />
+  )
+
+
+
+  const hasDiscount =
+    product?.discountPrice && product?.discountPrice < product.price;
+
+  const displayPrice = hasDiscount ? product.discountPrice : product?.price;
 
   const discountPercent = hasDiscount
     ? Math.round(
-      ((product.price - product.discountPrice) / product.price) * 100
+      ((product.price - product?.discountPrice) / product.price) * 100
     )
     : 0;
 
   const savedAmount = hasDiscount
-    ? product.price - product.discountPrice
+    ? product.price - product?.discountPrice
     : 0;
 
   const nextImage = () => {
     setCurrentIndex((prev) =>
-      prev === product.images.length - 1 ? 0 : prev + 1
+      prev === product?.images.length - 1 ? 0 : prev + 1
     );
   };
 
@@ -85,10 +93,10 @@ export default function ProductDetails() {
   };
 
   // Normalize brands and categories
-  const brands = product.isComboOffer ? product.brandsId : [product.brandId];
-  const categories = Array.isArray(product.categoryIds)
-    ? product.categoryIds
-    : [product.categoryIds];
+  const brands = product?.isComboOffer ? product.brandsId : [product?.brandId];
+  const categories = Array.isArray(product?.categoryIds)
+    ? product?.categoryIds
+    : [product?.categoryIds];
 
 
 
@@ -137,7 +145,7 @@ export default function ProductDetails() {
 
           {/* Thumbnails */}
           <div className="flex gap-2">
-            {product.images.map((img: string, i: number) => (
+            {product?.images.map((img: string, i: number) => (
               <button
                 key={i}
                 onClick={() => setCurrentIndex(i)}
@@ -159,8 +167,8 @@ export default function ProductDetails() {
         {/* Right: Product info */}
         <div className="md:col-span-2 flex flex-col gap-4">
           <h1 className="text-2xl font-bold flex items-center gap-2">
-            {product.name}
-            {product.isComboOffer && (
+            {product?.name}
+            {product?.isComboOffer && (
               <span className="bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 text-amber-900 text-xs font-extrabold px-3 py-1 rounded-full shadow-lg animate-pulse select-none">
                 Combo Offer
               </span>
@@ -169,7 +177,7 @@ export default function ProductDetails() {
 
           {/* Price */}
           <div className="flex items-center gap-2">
-            {!product.isComboOffer && discountPercent > 0 && (
+            {!product?.isComboOffer && discountPercent > 0 && (
               <span className="line-through text-gray-400 text-lg">
                 ৳ {product.price}
               </span>
@@ -178,14 +186,14 @@ export default function ProductDetails() {
               ৳ {displayPrice}
             </span>
             {/* Show saved amount in combo */}
-            {product.isComboOffer && savedAmount > 0 && (
+            {product?.isComboOffer && savedAmount > 0 && (
               <span className="text-sm text-green-600 font-semibold ml-2">
                 You save ৳{savedAmount}
               </span>
             )}
           </div>
 
-          <p className="text-gray-700">{product.shortDescription}</p>
+          <p className="text-gray-700">{product?.shortDescription}</p>
 
           {/* Brands */}
           <div className="flex flex-wrap items-center gap-2">

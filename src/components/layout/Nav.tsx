@@ -61,7 +61,7 @@ const Nav = () => {
     address: "",
   });
 
-  const deliveryCharge = deliveryChargeType === "inside" ? 60 : 120;
+  const deliveryCharge = deliveryChargeType === "inside" ? 80 : 150;
   const subtotal = items.reduce((t, i) => t + i.price * i.quantity, 0);
   const total = subtotal + deliveryCharge;
 
@@ -438,7 +438,7 @@ const Nav = () => {
                         onChange={() => setDeliveryChargeType("inside")}
                         className="accent-pink-600"
                       />
-                      <span className="text-sm">ঢাকার ভিতরে (৳60)</span>
+                      <span className="text-sm">কুমিল্লার ভিতরে (৳80)</span>
                     </label>
                     <label className="flex items-center gap-2 cursor-pointer">
                       <input
@@ -449,7 +449,7 @@ const Nav = () => {
                         onChange={() => setDeliveryChargeType("outside")}
                         className="accent-pink-600"
                       />
-                      <span className="text-sm">ঢাকার বাইরে (৳120)</span>
+                      <span className="text-sm">কুমিল্লার বাহিরে (৳150)</span>
                     </label>
                   </div>
                 </div>

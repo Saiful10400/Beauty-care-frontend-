@@ -16,7 +16,7 @@ type tQuery = {
   comboOffer: boolean;
   searchTerm: string
 };
-const defaultQuery = { offset: 0, limit: 5000,  searchTerm: "" };
+const defaultQuery = { offset: 0, limit: 5000,  searchTerm: "",sort:-1 };
 
 const ProductPageProducts = () => {
   const params = useAppSelector((p) => p.searchParams);
@@ -105,7 +105,7 @@ const ProductPageProducts = () => {
             </svg>
           </div>
         ) : products?.data?.result?.length ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-8">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-8">
             {products.data.result.map((cat: tProduct, index: number) => (
               <ProductCard key={cat._id ?? index} product={cat} />
             ))}
